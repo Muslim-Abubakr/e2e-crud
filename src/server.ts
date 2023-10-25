@@ -83,6 +83,11 @@ app.delete('/courses/:id', (req: Request<{id: string}>, res: Response) => {
   res.sendStatus(HTTP_STATUSES.NO_CONTENT)
 })
 
+app.delete('/__test__/data', (req: Request, res: Response) => {
+  db.courses = []
+  res.sendStatus(HTTP_STATUSES.NO_CONTENT)
+})
+
 app.put('/courses/:id', (req: Request<{id: string}, {}, {title: string}>, res: Response) => {
   const foundCourse = db.courses.find(c => c.id === +req.params.id)
   
