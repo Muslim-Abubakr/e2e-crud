@@ -29,11 +29,13 @@ describe('/courses', () => {
                 .expect(404)
     })
 
-    it(`Shouldn't create course with incorrect input data`, async () => {
+    it(`Should create course with correct input data`, async () => {
         await request(app)
                 .post('/courses')
-                .send({ title: '' })
-                .expect(400)
+                .send({ title: 'new course' })
+                .expect(201, {
+                    id: 
+                })
 
         await request(app)
                 .get('/courses')
