@@ -29,4 +29,15 @@ describe('/courses', () => {
                 .expect(404)
     })
 
+    it(`Shouldn't create course with incorrect input data`, async () => {
+        await request(app)
+                .post('/courses')
+                .send({ title: '' })
+                .expect(400)
+
+        await request(app)
+                .get('/courses')
+                .expect(200, [])
+    })
+
 });

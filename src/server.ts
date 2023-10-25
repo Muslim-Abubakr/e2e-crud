@@ -69,7 +69,6 @@ app.post('/courses', (req: Request<{}, {}, {title: string}>,
     title: req.body.title
  } 
 
- 
   db.courses.push(createdCourse)
   console.log(createdCourse)
   res
@@ -105,10 +104,6 @@ app.put('/courses/:id', (req: Request<{id: string}, {}, {title: string}>, res: R
 
 })
 
-app.delete('/__tests__/data', (req: Request, res: Response) => {
-    db.courses  = []
-    res.sendStatus(HTTP_STATUSES.NO_CONTENT)  
-  })
 
 /* app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
