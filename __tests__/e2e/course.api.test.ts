@@ -29,17 +29,18 @@ describe('/courses', () => {
                 .expect(404)
     })
 
-    it(`Should create course with correct input data`, async () => {
-        await request(app)
+    it(`Shouldnt update course with correct input data`, async () => {
+        const createResponse = await request(app)
                 .post('/courses')
                 .send({ title: 'new course' })
-                .expect(201, {
-                    id: 
-                })
+                .expect(201)
 
-        await request(app)
-                .get('/courses')
-                .expect(200, [])
+        const createdCourse = createResponse.body
+
+        expect(createdCourse).toEqual({
+            id: expect.any(Number),
+            title: 'new course'
+        })
     })
 
 });
