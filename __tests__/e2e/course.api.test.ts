@@ -29,6 +29,20 @@ describe('/courses', () => {
                 .expect(404)
     })
 
-   
+    it('Should return 400 for wrong title', async () => {
+        await request(app)
+                .post('/courses')
+                .send({ title: '' })
+                .expect(400)
+    })
+
+    it('Should create course with correct input data', async () => {
+       const createResponse = await request(app)
+                .post('/course')
+                .send({ title: 'new course' })
+                .expect(201)
+        
+        const createdCourse = createResponse.body
+    })
 
 });
