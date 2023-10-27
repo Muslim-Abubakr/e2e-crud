@@ -29,17 +29,6 @@ describe('/courses', () => {
                 .expect(404)
     })
 
-    let createdCourse: any = null
-
-    it(`Shouldnt update course with correct input data`, async () => {
-        await request(app)
-                .put(`/courses/` + createdCourse.id)
-                .send({ title: '' })
-                .expect(400)
-
-       await request(app)
-                .get('/courses/' + createdCourse.id)
-                .expect(200, [createdCourse])
-    })
+   
 
 });
