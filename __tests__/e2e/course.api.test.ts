@@ -36,13 +36,24 @@ describe('/courses', () => {
                 .expect(400)
     })
 
+    let createdCourse: any = null
+
     it('Should create course with correct input data', async () => {
        const createResponse = await request(app)
-                .post('/course')
+                .post('/courses')
                 .send({ title: 'new course' })
                 .expect(201)
         
-        const createdCourse = createResponse.body
+        createdCourse = createResponse.body
+
+        expect(createdCourse).toEqual({
+            id: expect.any(Number),
+            title: 'new course'
+        })
+
+        await request(app)
+                .get('/courses')
+                .expect(200)
     })
 
 });

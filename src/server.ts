@@ -105,6 +105,6 @@ app.put('/courses/:id', (req: Request<{id: string}, {}, {title: string}>, res: R
 })
 
 
-/* app.listen(port, () => {
+app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
-}) */
+}) 
