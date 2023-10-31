@@ -43,10 +43,10 @@ coursesRouter.post('/', (req: Request<{}, {}, {title: string}>,
  } 
 
   db.courses.push(createdCourse)
-  console.log(createdCourse)
+  
   res
     .status(HTTP_STATUSES.CREATED_201)
-    .json(createdCourse)
+    .send(createdCourse)
 })
 
 coursesRouter.delete('/:id', (req: Request<{id: string}>, res: Response) => {

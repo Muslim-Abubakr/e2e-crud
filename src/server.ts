@@ -30,6 +30,11 @@ app.get('/', (req: Request, res: Response) => {
     res.send('My-server')
 })
 
+app.delete('/__test__/data', (req: Request, res: Response) => {
+  db.courses = []
+  res.sendStatus(HTTP_STATUSES.NO_CONTENT)
+})
+
 app.use(RouterPaths.users, usersRouter)
 app.use(RouterPaths.courses, coursesRouter)
 

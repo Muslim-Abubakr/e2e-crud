@@ -1,21 +1,17 @@
 import request from 'supertest'
 import {app} from '../../src/server'
 import { RouterPaths } from '../../src/server';
+import { CourseType, db } from '../../src/db/db';
 
 describe('/courses', () => {
     beforeAll(async () => {
-        await request(app).delete('/__tests__/data')
+        await request(app).delete('/__test__/data')
     })
 
     it('Should return 200 and empty array', async () => {
         await request(app)
             .get(RouterPaths.courses)
-            .expect(200,  [
-                { id: 1, title: 'front-end' },
-                { id: 2, title: 'back-end' },
-                { id: 3, title: 'automation qa' },
-                { id: 4, title: 'devops' }
-              ])
+            .expect(200,  [])
     });
 
     it('Should return 200 and phrase: My-server', async () => {
@@ -39,22 +35,38 @@ describe('/courses', () => {
 
     let createdCourse: any = null
 
+    it('Shouldnt create course with incoorect input data', async () => {
+        const data = { title: '' }
+
+        await request(app)
+                .post(RouterPaths.courses)
+                .send(data)
+                .expect(400)
+
+        await request(app)
+                .get(RouterPaths.courses)
+                .expect(200, [])
+    })
+
     it('Should create course with correct input data', async () => {
        const createResponse = await request(app)
                 .post(RouterPaths.courses)
                 .send({ title: 'new course' })
                 .expect(201)
         
-        createdCourse = createResponse.body
+         createdCourse = createResponse.body
 
-        expect(createdCourse).toEqual({
-            id: expect.any(Number),
-            title: 'new course'
-        })
+         expect(createdCourse).toEqual({
+             id: expect.any(Number),
+             title: 'new course'
+         })
 
-        await request(app)
-                .get(RouterPaths.courses)
-                .expect(200)
-    })
+         await request(app)
+                 .get(RouterPaths.courses)
+                 .expect(200)
+     })
+
+     
+
 
 });
