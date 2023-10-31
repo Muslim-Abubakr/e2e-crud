@@ -2,6 +2,7 @@ import express from 'express'
 import { Request, Response } from 'express'
 import { db } from './db/db'
 import { usersRouter } from './users-router'
+import { coursesRouter } from './courses-router'
 
 export const app = express()
 
@@ -16,21 +17,21 @@ export const HTTP_STATUSES = {
   NOT_FOUND_404: 404
 }
 
+export const RouterPaths = {
+  courses: '/courses',
+  users: '/users',
+  __test__: '__test__'
+}
+
 const jsonBodyMiddleware = express.json()
 app.use(jsonBodyMiddleware)
-
-
-
-
-
 
 app.get('/', (req: Request, res: Response) => {
     res.send('My-server')
 })
 
-
-
-app.use('/users', usersRouter)
+app.use(RouterPaths.users, usersRouter)
+app.use(RouterPaths.courses, coursesRouter)
 
 // app.listen(port, () => {
 //   console.log(`Example app listening on port ${port}`)
