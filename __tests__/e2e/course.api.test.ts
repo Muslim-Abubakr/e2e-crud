@@ -1,5 +1,6 @@
 import request from 'supertest'
 import {app} from '../../src/server'
+import { RouterPaths } from '../../src/server';
 
 describe('/courses', () => {
     beforeAll(async () => {
@@ -8,7 +9,7 @@ describe('/courses', () => {
 
     it('Should return 200 and empty array', async () => {
         await request(app)
-            .get('/courses')
+            .get(RouterPaths.courses)
             .expect(200,  [
                 { id: 1, title: 'front-end' },
                 { id: 2, title: 'back-end' },
@@ -31,7 +32,7 @@ describe('/courses', () => {
 
     it('Should return 400 for wrong title', async () => {
         await request(app)
-                .post('/courses')
+                .post(RouterPaths.courses)
                 .send({ title: '' })
                 .expect(400)
     })
@@ -40,7 +41,7 @@ describe('/courses', () => {
 
     it('Should create course with correct input data', async () => {
        const createResponse = await request(app)
-                .post('/courses')
+                .post(RouterPaths.courses)
                 .send({ title: 'new course' })
                 .expect(201)
         
@@ -52,7 +53,7 @@ describe('/courses', () => {
         })
 
         await request(app)
-                .get('/courses')
+                .get(RouterPaths.courses)
                 .expect(200)
     })
 
