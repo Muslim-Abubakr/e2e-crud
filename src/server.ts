@@ -1,5 +1,6 @@
 import express from 'express'
 import { Request, Response } from 'express'
+import { db } from './db/db'
 
 export const app = express()
 
@@ -23,14 +24,7 @@ type CourseType = {
 }
 
 
-const db: {courses: CourseType[]} = {
-  courses: [
-    {id: 1, title: 'front-end'},
-    {id: 2, title: 'back-end'}, 
-    {id: 3, title: 'automation qa'}, 
-    {id: 4, title: 'devops'}
-  ]
-}
+
 
 app.get('/', (req: Request, res: Response) => {
     res.send('My-server')
@@ -105,6 +99,47 @@ app.put('/courses/:id', (req: Request<{id: string}, {}, {title: string}>, res: R
 })
 
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-}) 
+
+app.get('/users', (req: Request, res: Response) => {
+  let foundUsers = db.users
+
+  if (req.query.title) {
+    foundUsers = foundUsers.filter(u => u.userName.indexOf(req.query.userName as string) > -1)
+  }
+  res.send(foundUsers)
+})
+
+app.get('/users/:id', (req: Request, res: Response) => {
+  let foundUser = db.users.filter(u => u.id === +req.params.id)
+
+  if (foundUser) {
+    res
+        .status(200)
+        .send(foundUser)
+  } else {
+    res.send(404)
+  }
+})
+
+app.delete('/users/:id', (req: Request, res: Response) => {
+  db.users = db.users.filter(u => u.id !== +req.params.id)
+
+  res.send(204)
+})
+
+app.post('/users', (req: Request, res: Response)  => {
+  const createdUser = {
+    id: +(new Date()),
+    userName: req.body.userName
+  }
+
+  db.users.push(createdUser)
+
+  res
+      .status(201)
+      .send(createdUser)
+})
+
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`)
+// }) 
