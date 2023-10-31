@@ -140,6 +140,16 @@ app.post('/users', (req: Request, res: Response)  => {
       .send(createdUser)
 })
 
+app.put('/users/:id', (req: Request, res: Response) => {
+  const foundUser: any = db.users.find(u => u.id === +req.params.id)
+
+  if (!foundUser) {
+    res.status(404)
+  }
+
+  foundUser.userName = req.body.userName
+})
+
 // app.listen(port, () => {
 //   console.log(`Example app listening on port ${port}`)
 // }) 
