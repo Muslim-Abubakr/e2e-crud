@@ -66,7 +66,27 @@ describe('/courses', () => {
                  .expect(200)
      })
 
-     
+     let createdCourse2 = null
+
+     it('create one more course', async () => {
+        const data =  { title: 'my-course 2'}
+
+        const createResponse = await request(app)
+            .post(RouterPaths.courses)
+            .send(data)
+            .expect(201)
+
+        createdCourse2 = createResponse.body
+
+        expect(createdCourse2).toEqual({
+            id: expect.any(Number),
+            title: data.title
+        })
+
+        await request(app)
+            .get(RouterPaths.courses)
+            .expect(200, [createdCourse, createdCourse2])
+     })
 
 
 });
