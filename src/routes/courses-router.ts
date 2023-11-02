@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express"
 import { db } from "../db/db"
 import { HTTP_STATUSES } from "../server"
-
+import { RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../types"
 export const coursesRouter = Router({})
 
 type CourseType = {
@@ -9,29 +9,32 @@ type CourseType = {
     title: string
   }
 
-coursesRouter.get('/', (req: Request<{}, {}, {}, {title: string}>, 
-                     res: Response<CourseType[]>) => {
+coursesRouter.get('/', (req: RequestWithQuery<{title: string}>, 
+                        res: Response<CourseType[]>) => {
     let foundCoursesQuery = db.courses;
+
     if (req.query.title) {
       foundCoursesQuery = foundCoursesQuery
-      .filter(c => c.title.indexOf(req.query.title as string) > -1)
+          .filter(c => c.title.indexOf(req.query.title) > -1)
     }
     
-    res.json(foundCoursesQuery)
+    res.send(foundCoursesQuery) 
 })
 
-coursesRouter.get('/:id', (req: Request, res: Response) => {
+coursesRouter.get('/:id', (req: RequestWithParams<{id: string}>,
+                           res: Response) => {
   const foundCourse = db.courses.find(c => c.id === +req.params.id)
+
   if (foundCourse) {
-    res.json(foundCourse)
+    res.send(foundCourse)
   } else {
     res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
   }
   
 })
 
-coursesRouter.post('/', (req: Request<{}, {}, {title: string}>, 
-                      res: Response<CourseType>) => {
+coursesRouter.post('/', (req: RequestWithBody<{title: string}>, 
+                         res: Response<CourseType>) => {
   if (!req.body.title) {
     res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400)
     return;
@@ -49,7 +52,7 @@ coursesRouter.post('/', (req: Request<{}, {}, {title: string}>,
     .send(createdCourse)
 })
 
-coursesRouter.delete('/:id', (req: Request<{id: string}>, res: Response) => {
+coursesRouter.delete('/:id', (req: RequestWithParams<{id: string}>, res: Response) => {
   db.courses = db.courses.filter(c => c.id !== +req.params.id)
   
   res.sendStatus(HTTP_STATUSES.NO_CONTENT)
@@ -60,7 +63,7 @@ coursesRouter.delete('/__test__/data', (req: Request, res: Response) => {
   res.sendStatus(HTTP_STATUSES.NO_CONTENT)
 })
 
-coursesRouter.put('/:id', (req: Request<{id: string}, {}, {title: string}>, res: Response) => {
+coursesRouter.put('/:id', (req: RequestWithParamsAndBody<{id: string},{title: string}>, res: Response) => {
   const foundCourse = db.courses.find(c => c.id === +req.params.id)
   
   if(!foundCourse) {
