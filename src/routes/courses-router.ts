@@ -4,7 +4,7 @@ import { HTTP_STATUSES } from "../server"
 import { RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../types"
 import { CourseCreateInputModel } from "../models/CreateCourseModel"
 import { CourseUpdateInputModel } from "../models/UpdateCourseModel"
-import { CourseUriModel } from "../models/UriModelCourseModel"
+import { UriParamsCourseIdModel } from "../models/UriParamsCourseIdModel"
 import { CourseGetModel } from "../models/GetCoursesQueryModel"
 import { CourseViewModel } from "../models/ViewCourseModel"
 
@@ -34,7 +34,7 @@ coursesRouter.get('/', (req: RequestWithQuery<CourseGetModel>,
     })) 
 })
 
-coursesRouter.get('/:id', (req: RequestWithParams<CourseUriModel>,
+coursesRouter.get('/:id', (req: RequestWithParams<UriParamsCourseIdModel>,
                            res: Response<CourseViewModel>) => {
   const foundCourse = db.courses.find(c => c.id === +req.params.id)
 
