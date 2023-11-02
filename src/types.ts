@@ -8,6 +8,7 @@ export type UserType = {
 export type CourseType = {
     id: number
     title: string
+    studentsCount: number
 }
 
 export type StudentCourseBindings = {

@@ -6,6 +6,8 @@ import { CourseCreateInputModel } from "../models/CreateCourseModel"
 import { CourseUpdateInputModel } from "../models/UpdateCourseModel"
 import { CourseUriModel } from "../models/UriModelCourseModel"
 import { CourseGetModel } from "../models/GetCoursesQueryModel"
+import { CourseViewModel } from "../models/ViewCourseModel"
+
 
 export const coursesRouter = Router({})
 
@@ -16,23 +18,31 @@ type CourseType = {
   }
 
 coursesRouter.get('/', (req: RequestWithQuery<CourseGetModel>, 
-                        res: Response<CourseType[]>) => {
+                        res: Response<CourseViewModel[]>) => {
     let foundCoursesQuery = db.courses;
 
     if (req.query.title) {
       foundCoursesQuery = foundCoursesQuery
-          .filter(c => c.title.indexOf(req.query.title) > -1)
+          .filter(c => c.title.indexOf(req.query.title) > -1) 
     }
     
-    res.send(foundCoursesQuery) 
+    res.json(foundCoursesQuery.map(dbCourse => {
+      return {
+        id: dbCourse.id,
+        title: dbCourse.title
+      }
+    })) 
 })
 
 coursesRouter.get('/:id', (req: RequestWithParams<CourseUriModel>,
-                           res: Response) => {
+                           res: Response<CourseViewModel>) => {
   const foundCourse = db.courses.find(c => c.id === +req.params.id)
 
   if (foundCourse) {
-    res.send(foundCourse)
+    res.send({ 
+      id: foundCourse.id,
+      title: foundCourse.title
+     })
   } else {
     res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
   }
@@ -40,7 +50,7 @@ coursesRouter.get('/:id', (req: RequestWithParams<CourseUriModel>,
 })
 
 coursesRouter.post('/', (req: RequestWithBody<CourseCreateInputModel>, 
-                         res: Response<CourseType>) => {
+                         res: Response<CourseViewModel>) => {
   if (!req.body.title) {
     res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400)
     return;
@@ -48,7 +58,8 @@ coursesRouter.post('/', (req: RequestWithBody<CourseCreateInputModel>,
 
   const createdCourse = {
     id: +(new Date()),
-    title: req.body.title
+    title: req.body.title,
+    studentsCount: 0
  } 
 
   db.courses.push(createdCourse)
