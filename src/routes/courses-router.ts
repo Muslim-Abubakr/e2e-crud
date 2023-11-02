@@ -2,14 +2,20 @@ import { Request, Response, Router } from "express"
 import { db } from "../db/db"
 import { HTTP_STATUSES } from "../server"
 import { RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../types"
+import { CourseCreateInputModel } from "../models/CourseCreateModel"
+import { CourseUpdateInputModel } from "../models/CourseUpdateModel"
+import { CourseUriModel } from "../models/CourseUriModel"
+import { CourseGetModel } from "../models/GetCoursesQueryModel"
+
 export const coursesRouter = Router({})
+
 
 type CourseType = {
     id: number,
     title: string
   }
 
-coursesRouter.get('/', (req: RequestWithQuery<{title: string}>, 
+coursesRouter.get('/', (req: RequestWithQuery<CourseGetModel>, 
                         res: Response<CourseType[]>) => {
     let foundCoursesQuery = db.courses;
 
@@ -21,7 +27,7 @@ coursesRouter.get('/', (req: RequestWithQuery<{title: string}>,
     res.send(foundCoursesQuery) 
 })
 
-coursesRouter.get('/:id', (req: RequestWithParams<{id: string}>,
+coursesRouter.get('/:id', (req: RequestWithParams<CourseUriModel>,
                            res: Response) => {
   const foundCourse = db.courses.find(c => c.id === +req.params.id)
 
@@ -33,7 +39,7 @@ coursesRouter.get('/:id', (req: RequestWithParams<{id: string}>,
   
 })
 
-coursesRouter.post('/', (req: RequestWithBody<{title: string}>, 
+coursesRouter.post('/', (req: RequestWithBody<CourseCreateInputModel>, 
                          res: Response<CourseType>) => {
   if (!req.body.title) {
     res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400)
@@ -63,7 +69,7 @@ coursesRouter.delete('/__test__/data', (req: Request, res: Response) => {
   res.sendStatus(HTTP_STATUSES.NO_CONTENT)
 })
 
-coursesRouter.put('/:id', (req: RequestWithParamsAndBody<{id: string},{title: string}>, res: Response) => {
+coursesRouter.put('/:id', (req: RequestWithParamsAndBody<{id: string},CourseUpdateInputModel>, res: Response) => {
   const foundCourse = db.courses.find(c => c.id === +req.params.id)
   
   if(!foundCourse) {
