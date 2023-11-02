@@ -4,7 +4,7 @@ import { HTTP_STATUSES } from "../server"
 import { RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../types"
 import { CourseCreateInputModel } from "../models/CreateCourseModel"
 import { CourseUpdateInputModel } from "../models/UpdateCourseModel"
-import { CourseUriModel } from "../models/CourseUriModel"
+import { CourseUriModel } from "../models/UriModelCourseModel"
 import { CourseGetModel } from "../models/GetCoursesQueryModel"
 
 export const coursesRouter = Router({})
