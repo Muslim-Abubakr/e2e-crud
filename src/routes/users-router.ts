@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express"
 import { Express } from "express"
-import { db } from "./db/db"
+import { db } from "../db/db"
 
 export const usersRouter = Router({})
 
