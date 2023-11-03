@@ -1,5 +1,5 @@
 
 
 export type GetUsersQueryModel = {
-    id: string
+    userName: string
 }

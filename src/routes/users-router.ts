@@ -12,7 +12,7 @@ import { ViewUserModel } from "../models/ViewUserModel"
 export const usersRouter = Router({})
 
 
-usersRouter.get('/', (req: RequestWithQuery<{userName: string}>, res: Response) => {
+usersRouter.get('/', (req: RequestWithQuery<GetUsersQueryModel>, res: Response<ViewUserModel[]>) => {
     let foundUsers = db.users
   
     if (req.query.userName) {
@@ -21,8 +21,8 @@ usersRouter.get('/', (req: RequestWithQuery<{userName: string}>, res: Response) 
     res.send(foundUsers)
   })
   
-  usersRouter.get('/:id', (req: Request<{id: string}>, 
-    res: Response) => {
+  usersRouter.get('/:id', (req: RequestWithParams<UriParamsUsersIdModel>, 
+    res: Response<ViewUserModel[]>) => {
     let foundUser = db.users.filter(u => u.id === +req.params.id)
   
     if (foundUser) {
@@ -34,15 +34,15 @@ usersRouter.get('/', (req: RequestWithQuery<{userName: string}>, res: Response) 
     }
   })
   
-  usersRouter.delete('/:id', (req: Request<{id: string}>, 
+  usersRouter.delete('/:id', (req: RequestWithParams<UriParamsUsersIdModel>, 
     res: Response) => {
     db.users = db.users.filter(u => u.id !== +req.params.id)
   
     res.send(204)
   })
   
-  usersRouter.post('/', (req: Request<{},{}, {userName: string}>,
-     res: Response)  => {
+  usersRouter.post('/', (req: RequestWithBody<CreateUserModel>,
+     res: Response<ViewUserModel>)  => {
     const createdUser = {
       id: +(new Date()),
       userName: req.body.userName
@@ -55,8 +55,8 @@ usersRouter.get('/', (req: RequestWithQuery<{userName: string}>, res: Response) 
         .send(createdUser)
   })
   
-  usersRouter.put('/:id', (req: Request<{id: string},{},{userName: string}>, 
-    res: Response<CourseType[]>) => {
+  usersRouter.put('/:id', (req: RequestWithParamsAndBody<UriParamsUsersIdModel,UpdateUsersModel>, 
+    res: Response) => {
     const foundUser: any = db.users.find(u => u.id === +req.params.id)
   
     if (!foundUser) {
