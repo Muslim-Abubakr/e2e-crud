@@ -2,6 +2,7 @@ import request from 'supertest'
 import {app} from '../../src/server'
 import { RouterPaths } from '../../src/server';
 import { db } from '../../src/db/db';
+import { CourseCreateInputModel } from '../../src/models/CreateCourseModel';
 
 describe('/courses', () => {
     beforeAll(async () => {
@@ -35,8 +36,8 @@ describe('/courses', () => {
 
     let createdCourse: any = null
 
-    it('Shouldnt create course with incoorect input data', async () => {
-        const data = { title: '' }
+    it('Shouldn`t create course with incoorect input data', async () => {
+        const data: CourseCreateInputModel = { title: '' }
 
         await request(app)
                 .post(RouterPaths.courses)
@@ -49,16 +50,18 @@ describe('/courses', () => {
     })
 
     it('Should create course with correct input data', async () => {
-       const createResponse = await request(app)
+        const data: CourseCreateInputModel = { title: 'My Course' }
+       
+        const createResponse = await request(app)
                 .post(RouterPaths.courses)
-                .send({ title: 'new course' })
+                .send(data)
                 .expect(201)
         
          createdCourse = createResponse.body
 
          expect(createdCourse).toEqual({
              id: expect.any(Number),
-             title: 'new course'
+             title: data.title
          })
 
          await request(app)
@@ -69,7 +72,7 @@ describe('/courses', () => {
      let createdCourse2 = null
 
      it('create one more course', async () => {
-        const data =  { title: 'my-course 2'}
+        const data: CourseCreateInputModel =  { title: 'my-course 2'}
 
         const createResponse = await request(app)
             .post(RouterPaths.courses)

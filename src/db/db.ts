@@ -2,10 +2,10 @@ import { DBType } from "../types"
 
 export const db: DBType  = {
     courses: [
-      {id: 1, title: 'front-end', studentsCount: 10},
-      {id: 2, title: 'back-end', studentsCount: 10}, 
-      {id: 3, title: 'automation qa', studentsCount: 10}, 
-      {id: 4, title: 'devops', studentsCount: 10}
+      {id: 1, title: 'front-end'},
+      {id: 2, title: 'back-end'}, 
+      {id: 3, title: 'automation qa'}, 
+      {id: 4, title: 'devops'}
     ],
 
     users: [

@@ -30,7 +30,7 @@ usersRouter.get('/', (req: RequestWithQuery<GetUsersQueryModel>, res: Response<V
           .status(200)
           .send(foundUser)
     } else {
-      res.send(404)
+      res.sendStatus(404)
     }
   })
   

@@ -54,14 +54,16 @@ coursesRouter.post('/', (req: RequestWithBody<CourseCreateInputModel>,
   const createdCourse = {
     id: +(new Date()),
     title: req.body.title,
-    studentsCount: 0
- } 
+ }  
 
   db.courses.push(createdCourse)
   
   res
     .status(HTTP_STATUSES.CREATED_201)
-    .send(createdCourse)
+    .json({
+      id: createdCourse.id,
+      title: createdCourse.title,
+   } )
 })
 
 coursesRouter.delete('/:id', (req: RequestWithParams<UriParamsCourseIdModel>, res: Response) => {
