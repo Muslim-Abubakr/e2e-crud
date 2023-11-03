@@ -15,13 +15,7 @@ export const usersRouter = Router({})
 usersRouter.get('/', (req: RequestWithQuery<GetUsersQueryModel>, res: Response<ViewUserModel[]>) => {
     const foundProducts = usersRepository.findProducts(req.query.userName)
 
-    if (foundProducts) {
-      res
-          .status(200)
-          .send(foundProducts)
-    } else {
-      res.status(404)
-    }
+    res.send(foundProducts)
   })
   
   usersRouter.get('/:id', (req: RequestWithParams<UriParamsUsersIdModel>, 
