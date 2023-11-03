@@ -7,18 +7,21 @@ import { GetUsersQueryModel } from "../models/GetUsersQueryModel"
 import { UpdateUsersModel } from "../models/UpdateUsersModel"
 import { UriParamsUsersIdModel } from "../models/UriParamsUsersIdModel"
 import { ViewUserModel } from "../models/ViewUserModel"
-
+import { usersRepository } from "../repositories/users-repository"
 
 export const usersRouter = Router({})
 
 
 usersRouter.get('/', (req: RequestWithQuery<GetUsersQueryModel>, res: Response<ViewUserModel[]>) => {
-    let foundUsers = db.users
-  
-    if (req.query.userName) {
-      foundUsers = foundUsers.filter(u => u.userName.indexOf(req.query.userName as string) > -1)
+    const foundProducts = usersRepository.findProducts(req.query.userName)
+
+    if (foundProducts) {
+      res
+          .status(200)
+          .send(foundProducts)
+    } else {
+      res.status(404)
     }
-    res.send(foundUsers)
   })
   
   usersRouter.get('/:id', (req: RequestWithParams<UriParamsUsersIdModel>, 
