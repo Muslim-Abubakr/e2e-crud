@@ -2,8 +2,15 @@ import { Request, Response, Router } from "express"
 import { Express } from "express"
 import { db } from "../db/db"
 import { CourseType, RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../types"
+import { CreateUserModel } from "../models/CreateUserModel"
+import { GetUsersQueryModel } from "../models/GetUsersQueryModel"
+import { UpdateUsersModel } from "../models/UpdateUsersModel"
+import { UriParamsUsersIdModel } from "../models/UriParamsUsersIdModel"
+import { ViewUserModel } from "../models/ViewUserModel"
+
 
 export const usersRouter = Router({})
+
 
 usersRouter.get('/', (req: RequestWithQuery<{userName: string}>, res: Response) => {
     let foundUsers = db.users

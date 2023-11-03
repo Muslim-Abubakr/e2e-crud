@@ -12,11 +12,6 @@ import { CourseViewModel } from "../models/ViewCourseModel"
 export const coursesRouter = Router({})
 
 
-type CourseType = {
-    id: number,
-    title: string
-  }
-
 coursesRouter.get('/', (req: RequestWithQuery<CourseGetModel>, 
                         res: Response<CourseViewModel[]>) => {
     let foundCoursesQuery = db.courses;
