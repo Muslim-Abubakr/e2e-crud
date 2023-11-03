@@ -1,7 +1,7 @@
 import request from 'supertest'
 import {app} from '../../src/server'
 import { RouterPaths } from '../../src/server';
-import { CourseType, db } from '../../src/db/db';
+import { db } from '../../src/db/db';
 
 describe('/courses', () => {
     beforeAll(async () => {

@@ -69,7 +69,7 @@ coursesRouter.post('/', (req: RequestWithBody<CourseCreateInputModel>,
     .send(createdCourse)
 })
 
-coursesRouter.delete('/:id', (req: RequestWithParams<{id: string}>, res: Response) => {
+coursesRouter.delete('/:id', (req: RequestWithParams<UriParamsCourseIdModel>, res: Response) => {
   db.courses = db.courses.filter(c => c.id !== +req.params.id)
   
   res.sendStatus(HTTP_STATUSES.NO_CONTENT)
@@ -80,7 +80,7 @@ coursesRouter.delete('/__test__/data', (req: Request, res: Response) => {
   res.sendStatus(HTTP_STATUSES.NO_CONTENT)
 })
 
-coursesRouter.put('/:id', (req: RequestWithParamsAndBody<{id: string},CourseUpdateInputModel>, res: Response) => {
+coursesRouter.put('/:id', (req: RequestWithParamsAndBody<UriParamsCourseIdModel,CourseUpdateInputModel>, res: Response) => {
   const foundCourse = db.courses.find(c => c.id === +req.params.id)
   
   if(!foundCourse) {

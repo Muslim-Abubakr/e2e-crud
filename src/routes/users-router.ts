@@ -1,19 +1,21 @@
 import { Request, Response, Router } from "express"
 import { Express } from "express"
 import { db } from "../db/db"
+import { CourseType, RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../types"
 
 export const usersRouter = Router({})
 
-usersRouter.get('/', (req: Request, res: Response) => {
+usersRouter.get('/', (req: RequestWithQuery<{userName: string}>, res: Response) => {
     let foundUsers = db.users
   
-    if (req.query.title) {
+    if (req.query.userName) {
       foundUsers = foundUsers.filter(u => u.userName.indexOf(req.query.userName as string) > -1)
     }
     res.send(foundUsers)
   })
   
-  usersRouter.get('/:id', (req: Request, res: Response) => {
+  usersRouter.get('/:id', (req: Request<{id: string}>, 
+    res: Response) => {
     let foundUser = db.users.filter(u => u.id === +req.params.id)
   
     if (foundUser) {
@@ -25,13 +27,15 @@ usersRouter.get('/', (req: Request, res: Response) => {
     }
   })
   
-  usersRouter.delete('/:id', (req: Request, res: Response) => {
+  usersRouter.delete('/:id', (req: Request<{id: string}>, 
+    res: Response) => {
     db.users = db.users.filter(u => u.id !== +req.params.id)
   
     res.send(204)
   })
   
-  usersRouter.post('/', (req: Request, res: Response)  => {
+  usersRouter.post('/', (req: Request<{},{}, {userName: string}>,
+     res: Response)  => {
     const createdUser = {
       id: +(new Date()),
       userName: req.body.userName
@@ -44,7 +48,8 @@ usersRouter.get('/', (req: Request, res: Response) => {
         .send(createdUser)
   })
   
-  usersRouter.put('/:id', (req: Request, res: Response) => {
+  usersRouter.put('/:id', (req: Request<{id: string},{},{userName: string}>, 
+    res: Response<CourseType[]>) => {
     const foundUser: any = db.users.find(u => u.id === +req.params.id)
   
     if (!foundUser) {
