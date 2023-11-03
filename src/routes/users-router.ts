@@ -13,52 +13,44 @@ export const usersRouter = Router({})
 
 
 usersRouter.get('/', (req: RequestWithQuery<GetUsersQueryModel>, res: Response<ViewUserModel[]>) => {
-    const foundProducts = usersRepository.findProducts(req.query.userName)
+    const foundProducts = usersRepository.findUsers(req.query.userName)
 
     res.send(foundProducts)
   })
   
   usersRouter.get('/:id', (req: RequestWithParams<UriParamsUsersIdModel>, 
-    res: Response<ViewUserModel[]>) => {
-    let foundUser = db.users.filter(u => u.id === +req.params.id)
-  
-    if (foundUser) {
-      res
-          .status(200)
-          .send(foundUser)
-    } else {
-      res.sendStatus(404)
-    }
+    res: Response<ViewUserModel>) => {
+    const user = usersRepository.getUserById(+req.params.id)
+
+    res.send(user)
   })
   
   usersRouter.delete('/:id', (req: RequestWithParams<UriParamsUsersIdModel>, 
     res: Response) => {
-    db.users = db.users.filter(u => u.id !== +req.params.id)
-  
-    res.send(204)
+      const isDeleted = usersRepository.deleteUser(+req.params.id)
+      if (isDeleted) {
+        res.send(204)
+      } else { 
+        res.send(404)
+      }
   })
   
   usersRouter.post('/', (req: RequestWithBody<CreateUserModel>,
      res: Response<ViewUserModel>)  => {
-    const createdUser = {
-      id: +(new Date()),
-      userName: req.body.userName
-    }
-  
-    db.users.push(createdUser)
-  
+    const newUser = usersRepository.createUser(req.body.userName)
+
     res
         .status(201)
-        .send(createdUser)
+        .send(newUser)
   })
   
   usersRouter.put('/:id', (req: RequestWithParamsAndBody<UriParamsUsersIdModel,UpdateUsersModel>, 
     res: Response) => {
-    const foundUser: any = db.users.find(u => u.id === +req.params.id)
-  
-    if (!foundUser) {
-      res.status(404)
-    }
-  
-    foundUser.userName = req.body.userName
+      const isUpdated = usersRepository.updateUser(+req.params.id, req.body.userName)
+
+      if (isUpdated) {
+        return true
+      } else {
+        return false
+      }
   })
