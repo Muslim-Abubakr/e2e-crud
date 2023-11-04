@@ -1,7 +1,6 @@
 import request from 'supertest'
 import {app} from '../../src/server'
 import { RouterPaths } from '../../src/server';
-import { db } from '../../src/db/db';
 import { CourseCreateInputModel } from '../../src/models/CreateCourseModel';
 
 describe('/courses', () => {

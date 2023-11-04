@@ -1,5 +1,4 @@
 export type CourseViewModel = {
     id: number
-    title: string
-    
+    title: string | void
 }

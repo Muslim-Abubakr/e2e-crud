@@ -15,46 +15,52 @@ export const coursesRouter = Router({})
 
 coursesRouter.get('/', (req: RequestWithQuery<CourseGetModel>, 
                         res: Response<CourseViewModel[]>) => {
-    let findCourse = coursesRepository.findCourse(title)
+    let findCourse = coursesRepository.findCourse(req.query.title)
 
     res.send(findCourse)
 })
 
 coursesRouter.get('/:id', (req: RequestWithParams<UriParamsCourseIdModel>,
                            res: Response<CourseViewModel>) => {
-  const foundCourse = db.courses.find(c => c.id === +req.params.id)
+  let foundCourse = coursesRepository.getCourseById(+req.params.id)
 
   if (foundCourse) {
-    res.send({ 
-      id: foundCourse.id,
-      title: foundCourse.title
-     })
+    res.send(foundCourse)
   } else {
     res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
   }
-  
 })
 
 coursesRouter.post('/', (req: RequestWithBody<CourseCreateInputModel>, 
                          res: Response<CourseViewModel>) => {
+  let newCourse = coursesRepository.createCourse(req.body.title)
+
   if (!req.body.title) {
     res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400)
     return;
   }
 
-  const createdCourse = {
-    id: +(new Date()),
-    title: req.body.title,
- }  
-
-  db.courses.push(createdCourse)
-  
   res
     .status(HTTP_STATUSES.CREATED_201)
-    .json({
-      id: createdCourse.id,
-      title: createdCourse.title,
-   } )
+    .send(newCourse)
+//   if (!req.body.title) {
+//     res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400)
+//     return;
+//   }
+
+//   const createdCourse = {
+//     id: +(new Date()),
+//     title: req.body.title,
+//  }  
+
+//   db.courses.push(createdCourse)
+  
+//   res
+//     .status(HTTP_STATUSES.CREATED_201)
+//     .json({
+//       id: createdCourse.id,
+//       title: createdCourse.title,
+//    } )
 })
 
 coursesRouter.delete('/:id', (req: RequestWithParams<UriParamsCourseIdModel>, res: Response) => {
