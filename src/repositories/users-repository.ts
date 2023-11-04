@@ -1,10 +1,11 @@
 import { db } from "../db/db";
 
 export const usersRepository = {
-    findUsers(userName: string | null) {
-        if (userName) {
-            let filteredProducts = db.users.filter(u => u.userName.indexOf(userName) > -1)
-            return filteredProducts
+    findUsers(userName: string) {
+        let filteredUser = db.users.filter(i => i.userName.indexOf(userName) > -1)
+
+        if (filteredUser) {
+            return filteredUser
         } else {
             return db.users
         }

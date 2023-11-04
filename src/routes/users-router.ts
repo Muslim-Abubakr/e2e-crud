@@ -1,7 +1,5 @@
-import { Request, Response, Router } from "express"
-import { Express } from "express"
-import { db } from "../db/db"
-import { CourseType, RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../types"
+import { Response, Router } from "express"
+import { RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../types"
 import { CreateUserModel } from "../models/CreateUserModel"
 import { GetUsersQueryModel } from "../models/GetUsersQueryModel"
 import { UpdateUsersModel } from "../models/UpdateUsersModel"
@@ -12,10 +10,11 @@ import { usersRepository } from "../repositories/users-repository"
 export const usersRouter = Router({})
 
 
-usersRouter.get('/', (req: RequestWithQuery<GetUsersQueryModel>, res: Response<ViewUserModel[]>) => {
-    const foundProducts = usersRepository.findUsers(req.query.userName)
+usersRouter.get('/', (req: RequestWithQuery<GetUsersQueryModel>,
+                      res: Response<ViewUserModel[]>) => {
+    let foundProducts = usersRepository.findUsers(req.query.userName)
 
-    res.send(foundProducts)
+    res.json(foundProducts)
   })
   
   usersRouter.get('/:id', (req: RequestWithParams<UriParamsUsersIdModel>, 

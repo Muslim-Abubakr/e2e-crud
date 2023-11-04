@@ -2,5 +2,5 @@
 
 export type ViewUserModel = {
     id: number
-    userName: string
+    userName: string | void
 }

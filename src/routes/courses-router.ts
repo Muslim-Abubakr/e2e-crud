@@ -8,7 +8,7 @@ import { UriParamsCourseIdModel } from "../models/UriParamsCourseIdModel"
 import { CourseGetModel } from "../models/GetCoursesQueryModel"
 import { CourseViewModel } from "../models/ViewCourseModel"
 import { coursesRepository } from "../repositories/courses-repository"
-import { title } from "process"
+
 
 export const coursesRouter = Router({})
 

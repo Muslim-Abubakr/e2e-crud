@@ -35,9 +35,15 @@ app.delete('/__test__/data', (req: Request, res: Response) => {
   res.sendStatus(HTTP_STATUSES.NO_CONTENT)
 })
 
+app.get('/products', (req: Request, res: Response) => {
+  // @ts-ignore
+  const some = req.some
+  res.send({value: some})
+})
+
 app.use(RouterPaths.users, usersRouter)
 app.use(RouterPaths.courses, coursesRouter)
 
-//  app.listen(port, () => {
-//    console.log(`Example app listening on port ${port}`)
-//  }) 
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+  }) 
