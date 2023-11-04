@@ -7,26 +7,17 @@ import { CourseUpdateInputModel } from "../models/UpdateCourseModel"
 import { UriParamsCourseIdModel } from "../models/UriParamsCourseIdModel"
 import { CourseGetModel } from "../models/GetCoursesQueryModel"
 import { CourseViewModel } from "../models/ViewCourseModel"
-
+import { coursesRepository } from "../repositories/courses-repository"
+import { title } from "process"
 
 export const coursesRouter = Router({})
 
 
 coursesRouter.get('/', (req: RequestWithQuery<CourseGetModel>, 
                         res: Response<CourseViewModel[]>) => {
-    let foundCoursesQuery = db.courses;
+    let findCourse = coursesRepository.findCourse(title)
 
-    if (req.query.title) {
-      foundCoursesQuery = foundCoursesQuery
-          .filter(c => c.title.indexOf(req.query.title) > -1) 
-    }
-    
-    res.json(foundCoursesQuery.map(dbCourse => {
-      return {
-        id: dbCourse.id,
-        title: dbCourse.title
-      }
-    })) 
+    res.send(findCourse)
 })
 
 coursesRouter.get('/:id', (req: RequestWithParams<UriParamsCourseIdModel>,

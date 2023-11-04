@@ -38,6 +38,6 @@ app.delete('/__test__/data', (req: Request, res: Response) => {
 app.use(RouterPaths.users, usersRouter)
 app.use(RouterPaths.courses, coursesRouter)
 
-// app.listen(port, () => {
-//   console.log(`Example app listening on port ${port}`)
-// }) 
+ app.listen(port, () => {
+   console.log(`Example app listening on port ${port}`)
+ }) 
