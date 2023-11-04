@@ -26,6 +26,28 @@ export const coursesRepository = {
 
         db.courses.push(createdCourse)
         return createdCourse
-    }
+    },
 
+    deleteCourse(id: number) {
+        let deleteCourse = db.courses.filter(i => i.id !== id)
+
+        if(deleteCourse) {
+            return true
+        } else {
+            return false
+        }
+    },
+
+    updateCourse(id: number, title: string) {
+        const foundCourse = db.courses.find(i => i.id === id)
+
+        if (foundCourse) {
+            foundCourse.id = id,
+            foundCourse.title = title
+            return foundCourse
+        } else {
+            return false
+        }
+    }
+    
 }

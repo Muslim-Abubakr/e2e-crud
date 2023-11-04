@@ -35,7 +35,7 @@ coursesRouter.post('/', (req: RequestWithBody<CourseCreateInputModel>,
                          res: Response<CourseViewModel>) => {
   let newCourse = coursesRepository.createCourse(req.body.title)
 
-  if (!req.body.title) {
+  if (!req.body.title || req.body.title === '') {
     res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400)
     return;
   }
@@ -43,30 +43,17 @@ coursesRouter.post('/', (req: RequestWithBody<CourseCreateInputModel>,
   res
     .status(HTTP_STATUSES.CREATED_201)
     .send(newCourse)
-//   if (!req.body.title) {
-//     res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400)
-//     return;
-//   }
 
-//   const createdCourse = {
-//     id: +(new Date()),
-//     title: req.body.title,
-//  }  
-
-//   db.courses.push(createdCourse)
-  
-//   res
-//     .status(HTTP_STATUSES.CREATED_201)
-//     .json({
-//       id: createdCourse.id,
-//       title: createdCourse.title,
-//    } )
 })
 
 coursesRouter.delete('/:id', (req: RequestWithParams<UriParamsCourseIdModel>, res: Response) => {
-  db.courses = db.courses.filter(c => c.id !== +req.params.id)
-  
-  res.sendStatus(HTTP_STATUSES.NO_CONTENT)
+  const isDeleted = coursesRepository.deleteCourse(+req.params.id)
+
+  if (isDeleted) {
+    res.send(204)
+  } else {
+    res.send(404)
+  }
 })
 
 coursesRouter.delete('/__test__/data', (req: Request, res: Response) => {
@@ -75,18 +62,11 @@ coursesRouter.delete('/__test__/data', (req: Request, res: Response) => {
 })
 
 coursesRouter.put('/:id', (req: RequestWithParamsAndBody<UriParamsCourseIdModel,CourseUpdateInputModel>, res: Response) => {
-  const foundCourse = db.courses.find(c => c.id === +req.params.id)
-  
-  if(!foundCourse) {
-    res.sendStatus(404)
-    return;
-  }
+  const isUpdated = coursesRepository.updateCourse(+req.params.id, req.body.title)
 
-  if (!req.body.title) {
-    res.sendStatus(404)
-    return;
+  if (isUpdated) {
+    res.send(isUpdated)
+  } else {
+    return false
   }
- 
-  foundCourse.title = req.body.title
-
 })
