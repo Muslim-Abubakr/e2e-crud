@@ -1,6 +1,6 @@
 import request from 'supertest'
-import {app} from '../../src/server'
-import { RouterPaths } from '../../src/server';
+import {app} from '../../src'
+import { RouterPaths } from '../../src';
 import { CreateUserModel } from '../../src/models/CreateUserModel'; 
 import { db } from '../../src/db/db';
 

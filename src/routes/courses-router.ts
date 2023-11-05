@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express"
 import { db } from "../db/db"
-import { HTTP_STATUSES } from "../server"
+import { HTTP_STATUSES } from ".."
 import { RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../types"
 import { CourseCreateInputModel } from "../models/CreateCourseModel"
 import { CourseUpdateInputModel } from "../models/UpdateCourseModel"

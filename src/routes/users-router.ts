@@ -1,5 +1,6 @@
 import { Response, Router } from "express"
 import { RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../types"
+
 import { CreateUserModel } from "../models/CreateUserModel"
 import { GetUsersQueryModel } from "../models/GetUsersQueryModel"
 import { UpdateUsersModel } from "../models/UpdateUsersModel"
@@ -12,9 +13,9 @@ export const usersRouter = Router({})
 
 usersRouter.get('/', (req: RequestWithQuery<GetUsersQueryModel>,
                       res: Response<ViewUserModel[]>) => {
-    let foundProducts = usersRepository.findUsers(req.query.userName)
+    let findUsers = usersRepository.findUsers(req.query.userName)
 
-    res.json(foundProducts)
+    res.send(findUsers)
   })
   
   usersRouter.get('/:id', (req: RequestWithParams<UriParamsUsersIdModel>, 

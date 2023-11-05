@@ -6,7 +6,7 @@
   },
   "scripts": {
     "watch": "yarn tsc -w",
-    "dev": "yarn nodemon ./dist/server.js ",
+    "dev": "yarn nodemon --inspect ./dist/index.js ",
     "test": "jest"
   },
   "dependencies": {
