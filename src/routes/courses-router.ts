@@ -8,9 +8,14 @@ import { UriParamsCourseIdModel } from "../models/UriParamsCourseIdModel"
 import { CourseGetModel } from "../models/GetCoursesQueryModel"
 import { CourseViewModel } from "../models/ViewCourseModel"
 import { coursesRepository } from "../repositories/courses-repository"
+import { ExpressValidator, body, validationResult } from "express-validator"
+
 
 
 export const coursesRouter = Router({})
+
+const titleValidation = body('title').trim().isLength({ min: 3, max: 20 }).withMessage('Length should be from 3 to 10')
+const urlValidation = body('title').trim().isURL().withMessage('Should be URL')
 
 
 coursesRouter.get('/', (req: RequestWithQuery<CourseGetModel>, 
@@ -31,18 +36,23 @@ coursesRouter.get('/:id', (req: RequestWithParams<UriParamsCourseIdModel>,
   }
 })
 
-coursesRouter.post('/', (req: RequestWithBody<CourseCreateInputModel>, 
-                         res: Response<CourseViewModel>) => {
-  let newCourse = coursesRepository.createCourse(req.body.title)
+coursesRouter.post('/',
+  titleValidation,
+  (req: RequestWithBody<CourseCreateInputModel>, 
+  res: Response) => {
+    const errors = validationResult(req)
 
-  if (!req.body.title || req.body.title === '') {
-    res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400)
-    return;
-  }
+    if (!errors.isEmpty()) {
+      return res
+                .status(400)
+                .json({ errors: errors.array() })
+    }
 
-  res
-    .status(HTTP_STATUSES.CREATED_201)
-    .send(newCourse)
+    let newCourse = coursesRepository.createCourse(req.body.title)
+
+    res
+      .status(HTTP_STATUSES.CREATED_201)
+      .send(newCourse)
 
 })
 
@@ -61,7 +71,17 @@ coursesRouter.delete('/__test__/data', (req: Request, res: Response) => {
   res.sendStatus(HTTP_STATUSES.NO_CONTENT)
 })
 
-coursesRouter.put('/:id', (req: RequestWithParamsAndBody<UriParamsCourseIdModel,CourseUpdateInputModel>, res: Response) => {
+coursesRouter.put('/:id', 
+  titleValidation,
+  (req: RequestWithParamsAndBody<UriParamsCourseIdModel,CourseUpdateInputModel>, res: Response) => {
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    return res
+              .status(400)
+              .json({ errors: errors.array() })
+  }
+  
   const isUpdated = coursesRepository.updateCourse(+req.params.id, req.body.title)
 
   if (isUpdated) {

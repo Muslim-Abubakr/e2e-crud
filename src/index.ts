@@ -9,7 +9,7 @@ export const app = express()
 
 const port = 2001
 
-
+app.use(bodyParser())
 
 export const HTTP_STATUSES = {
   OK200: 200,
