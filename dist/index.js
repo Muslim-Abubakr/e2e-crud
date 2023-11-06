@@ -24,22 +24,8 @@ exports.RouterPaths = {
 };
 const jsonBodyMiddleware = express_1.default.json();
 exports.app.use(jsonBodyMiddleware);
-const authGuardMiddleware = (req, res, next) => {
-    if (req.query.token === '123') {
-        next();
-    }
-    else {
-        res.send(401);
-    }
-};
-let requestCounter = 0;
-const requestCounterMiddleware = (req, res, next) => {
-    requestCounter++;
-    next();
-};
-// app.use(authGuardMiddleware)
-exports.app.get('/', requestCounterMiddleware, (req, res) => {
-    res.send('My-server requests: ' + requestCounter);
+exports.app.get('/', (req, res) => {
+    res.send('My-server');
 });
 exports.app.delete('/__test__/data', (req, res) => {
     db_1.db.courses = [];

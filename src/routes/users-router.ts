@@ -1,6 +1,5 @@
 import { Response, Router } from "express"
 import { RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../types"
-
 import { CreateUserModel } from "../models/CreateUserModel"
 import { GetUsersQueryModel } from "../models/GetUsersQueryModel"
 import { UpdateUsersModel } from "../models/UpdateUsersModel"
