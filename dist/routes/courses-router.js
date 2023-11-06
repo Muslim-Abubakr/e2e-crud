@@ -7,6 +7,7 @@ const __1 = require("..");
 const courses_repository_1 = require("../repositories/courses-repository");
 const express_validator_1 = require("express-validator");
 const titleValidation_1 = require("../middlewares/titleValidation");
+const input_validation_middleware_1 = require("../middlewares/input-validation-middleware");
 exports.coursesRouter = (0, express_1.Router)({});
 const urlValidation = (0, express_validator_1.body)('title').trim().isURL().withMessage('Should be URL');
 exports.coursesRouter.get('/', (req, res) => {
@@ -22,13 +23,7 @@ exports.coursesRouter.get('/:id', (req, res) => {
         res.sendStatus(__1.HTTP_STATUSES.NOT_FOUND_404);
     }
 });
-exports.coursesRouter.post('/', titleValidation_1.titleValidation, (req, res) => {
-    const errors = (0, express_validator_1.validationResult)(req);
-    if (!errors.isEmpty()) {
-        return res
-            .status(400)
-            .json({ errors: errors.array() });
-    }
+exports.coursesRouter.post('/', titleValidation_1.titleValidation, input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
     let newCourse = courses_repository_1.coursesRepository.createCourse(req.body.title);
     res
         .status(__1.HTTP_STATUSES.CREATED_201)

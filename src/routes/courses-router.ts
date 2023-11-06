@@ -10,6 +10,7 @@ import { CourseViewModel } from "../models/ViewCourseModel"
 import { coursesRepository } from "../repositories/courses-repository"
 import { body, validationResult } from "express-validator"
 import { titleValidation } from "../middlewares/titleValidation"
+import { inputValidationMiddleware } from "../middlewares/input-validation-middleware"
 
 
 
@@ -38,15 +39,9 @@ coursesRouter.get('/:id', (req: RequestWithParams<UriParamsCourseIdModel>,
 
 coursesRouter.post('/',
   titleValidation,
+  inputValidationMiddleware,
   (req: RequestWithBody<CourseCreateInputModel>, 
   res: Response) => {
-    const errors = validationResult(req)
-
-    if (!errors.isEmpty()) {
-      return res
-                .status(400)
-                .json({ errors: errors.array() })
-    }
 
     let newCourse = coursesRepository.createCourse(req.body.title)
 
