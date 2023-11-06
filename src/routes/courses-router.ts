@@ -8,13 +8,13 @@ import { UriParamsCourseIdModel } from "../models/UriParamsCourseIdModel"
 import { CourseGetModel } from "../models/GetCoursesQueryModel"
 import { CourseViewModel } from "../models/ViewCourseModel"
 import { coursesRepository } from "../repositories/courses-repository"
-import { ExpressValidator, body, validationResult } from "express-validator"
+import { body, validationResult } from "express-validator"
+import { titleValidation } from "../middlewares/titleValidation"
 
 
 
 export const coursesRouter = Router({})
 
-const titleValidation = body('title').trim().isLength({ min: 3, max: 20 }).withMessage('Length should be from 3 to 10')
 const urlValidation = body('title').trim().isURL().withMessage('Should be URL')
 
 

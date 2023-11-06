@@ -6,8 +6,8 @@ const db_1 = require("../db/db");
 const __1 = require("..");
 const courses_repository_1 = require("../repositories/courses-repository");
 const express_validator_1 = require("express-validator");
+const titleValidation_1 = require("../middlewares/titleValidation");
 exports.coursesRouter = (0, express_1.Router)({});
-const titleValidation = (0, express_validator_1.body)('title').trim().isLength({ min: 3, max: 20 }).withMessage('Length should be from 3 to 10');
 const urlValidation = (0, express_validator_1.body)('title').trim().isURL().withMessage('Should be URL');
 exports.coursesRouter.get('/', (req, res) => {
     let findCourse = courses_repository_1.coursesRepository.findCourse(req.query.title);
@@ -22,7 +22,7 @@ exports.coursesRouter.get('/:id', (req, res) => {
         res.sendStatus(__1.HTTP_STATUSES.NOT_FOUND_404);
     }
 });
-exports.coursesRouter.post('/', titleValidation, (req, res) => {
+exports.coursesRouter.post('/', titleValidation_1.titleValidation, (req, res) => {
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
         return res
@@ -47,7 +47,7 @@ exports.coursesRouter.delete('/__test__/data', (req, res) => {
     db_1.db.courses = [];
     res.sendStatus(__1.HTTP_STATUSES.NO_CONTENT);
 });
-exports.coursesRouter.put('/:id', titleValidation, (req, res) => {
+exports.coursesRouter.put('/:id', titleValidation_1.titleValidation, (req, res) => {
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
         return res
