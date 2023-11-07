@@ -4,12 +4,15 @@ import { db } from './db/db'
 import { usersRouter } from './routes/users-router'
 import { coursesRouter } from './routes/courses-router'
 import bodyParser  from 'body-parser'
+import { authorizationMiddleware } from './middlewares/authorization' 
 
 export const app = express()
 
 const port = 2001
 
 app.use(bodyParser())
+app.use(authorizationMiddleware)
+
 
 export const HTTP_STATUSES = {
   OK200: 200,

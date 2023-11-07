@@ -13,9 +13,7 @@ import { titleValidation } from "../middlewares/titleValidation"
 import { inputValidationMiddleware } from "../middlewares/input-validation-middleware"
 
 
-
 export const coursesRouter = Router({})
-
 const urlValidation = body('title').trim().isURL().withMessage('Should be URL')
 
 
