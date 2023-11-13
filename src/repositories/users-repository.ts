@@ -1,7 +1,8 @@
 import { db } from "../db/db";
+import { UserType } from "../types";
 
 export const usersRepository = {
-    findUsers(userName: string) {
+    async findUsers(userName: string): Promise<UserType[]> {
         if (userName) {
             let filteredUser = db.users.filter(i => i.userName.indexOf(userName) > -1)
             return filteredUser
@@ -10,12 +11,12 @@ export const usersRepository = {
         }
     },
 
-    getUserById(id: number) {
+    async getUserById(id: number): Promise<UserType | undefined> {
         const foundUser = db.users.find(u => u.id === id)
         return foundUser
     },
 
-    createUser(userName: string) {
+    async createUser(userName: string): Promise<UserType> {
         const newUser = {
             id: +(new Date()),
             userName: userName
@@ -25,18 +26,18 @@ export const usersRepository = {
         return newUser
     },
 
-    updateUser(id: number, userName: string) {
+    async updateUser(id: number, userName: string): Promise<boolean> {
         const foundUser =  db.users.find(u => u.id === id)
 
         if (foundUser) {
             foundUser.userName = userName
-            return foundUser
+            return true
         } else {
             return false
         }
     },
 
-    deleteUser(id: number) {
+    async deleteUser(id: number): Promise<boolean> {
         const deleteUser = db.users.filter(u => u.id !== id)
 
         if (deleteUser) {
