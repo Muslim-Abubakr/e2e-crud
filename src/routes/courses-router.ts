@@ -11,20 +11,17 @@ import { coursesRepository } from "../repositories/courses-repository"
 import { body, validationResult } from "express-validator"
 import { titleValidation } from "../middlewares/titleValidation"
 import { inputValidationMiddleware } from "../middlewares/input-validation-middleware"
-
+import { CourseType } from "../types"
 
 export const coursesRouter = Router({})
-const urlValidation = body('title').trim().isURL().withMessage('Should be URL')
 
 
-coursesRouter.get('/', (req: RequestWithQuery<CourseGetModel>, 
-                        res: Response<CourseViewModel[]>) => {
-    let findCourse = coursesRepository.findCourse(req.query.title)
-
-    setInterval(() => {
-      res.send(findCourse)
-    }, 5000)
+coursesRouter.get('/', async (req: RequestWithQuery<CourseGetModel>, 
+                        res: Response) => {
+    let findCoursePromise: Promise<CourseType[]> = coursesRepository.findCourse(req.query.title)
     
+    const foundCourse = await findCoursePromise
+    res.send(foundCourse)
 })
 
 coursesRouter.get('/:id', (req: RequestWithParams<UriParamsCourseIdModel>,

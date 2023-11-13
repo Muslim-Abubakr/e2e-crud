@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.coursesRouter = void 0;
 const express_1 = require("express");
@@ -9,13 +18,11 @@ const express_validator_1 = require("express-validator");
 const titleValidation_1 = require("../middlewares/titleValidation");
 const input_validation_middleware_1 = require("../middlewares/input-validation-middleware");
 exports.coursesRouter = (0, express_1.Router)({});
-const urlValidation = (0, express_validator_1.body)('title').trim().isURL().withMessage('Should be URL');
-exports.coursesRouter.get('/', (req, res) => {
-    let findCourse = courses_repository_1.coursesRepository.findCourse(req.query.title);
-    setInterval(() => {
-        res.send(findCourse);
-    }, 5000);
-});
+exports.coursesRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let findCoursePromise = courses_repository_1.coursesRepository.findCourse(req.query.title);
+    const foundCourse = yield findCoursePromise;
+    res.send(foundCourse);
+}));
 exports.coursesRouter.get('/:id', (req, res) => {
     let foundCourse = courses_repository_1.coursesRepository.getCourseById(+req.params.id);
     if (foundCourse) {
