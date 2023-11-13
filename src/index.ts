@@ -11,7 +11,7 @@ export const app = express()
 const port = 2001
 
 app.use(bodyParser())
-app.use(authorizationMiddleware)
+// app.use(authorizationMiddleware)
 
 
 export const HTTP_STATUSES = {
@@ -43,8 +43,8 @@ app.delete('/__test__/data', (req: Request, res: Response) => {
   res.sendStatus(HTTP_STATUSES.NO_CONTENT)
 })
 
-
 app.use(RouterPaths.users, usersRouter)
+
 app.use(RouterPaths.courses, coursesRouter)
 
 app.listen(port, () => {

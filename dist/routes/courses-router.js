@@ -12,7 +12,9 @@ exports.coursesRouter = (0, express_1.Router)({});
 const urlValidation = (0, express_validator_1.body)('title').trim().isURL().withMessage('Should be URL');
 exports.coursesRouter.get('/', (req, res) => {
     let findCourse = courses_repository_1.coursesRepository.findCourse(req.query.title);
-    res.send(findCourse);
+    setInterval(() => {
+        res.send(findCourse);
+    }, 5000);
 });
 exports.coursesRouter.get('/:id', (req, res) => {
     let foundCourse = courses_repository_1.coursesRepository.getCourseById(+req.params.id);

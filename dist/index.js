@@ -9,11 +9,10 @@ const db_1 = require("./db/db");
 const users_router_1 = require("./routes/users-router");
 const courses_router_1 = require("./routes/courses-router");
 const body_parser_1 = __importDefault(require("body-parser"));
-const authorization_1 = require("./middlewares/authorization");
 exports.app = (0, express_1.default)();
 const port = 2001;
 exports.app.use((0, body_parser_1.default)());
-exports.app.use(authorization_1.authorizationMiddleware);
+// app.use(authorizationMiddleware)
 exports.HTTP_STATUSES = {
     OK200: 200,
     CREATED_201: 201,

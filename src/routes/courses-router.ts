@@ -21,7 +21,10 @@ coursesRouter.get('/', (req: RequestWithQuery<CourseGetModel>,
                         res: Response<CourseViewModel[]>) => {
     let findCourse = coursesRepository.findCourse(req.query.title)
 
-    res.send(findCourse)
+    setInterval(() => {
+      res.send(findCourse)
+    }, 5000)
+    
 })
 
 coursesRouter.get('/:id', (req: RequestWithParams<UriParamsCourseIdModel>,
