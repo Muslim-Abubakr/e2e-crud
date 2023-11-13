@@ -18,15 +18,15 @@ export const coursesRouter = Router({})
 
 coursesRouter.get('/', async (req: RequestWithQuery<CourseGetModel>, 
                         res: Response) => {
-    let findCoursePromise: Promise<CourseType[]> = coursesRepository.findCourse(req.query.title)
+    let findCoursePromise: CourseType[] = await coursesRepository.findCourse(req.query.title)
     
-    const foundCourse = await findCoursePromise
+    const foundCourse = findCoursePromise
     res.send(foundCourse)
 })
 
-coursesRouter.get('/:id', (req: RequestWithParams<UriParamsCourseIdModel>,
-                           res: Response<CourseViewModel>) => {
-  let foundCourse = coursesRepository.getCourseById(+req.params.id)
+coursesRouter.get('/:id', async (req: RequestWithParams<UriParamsCourseIdModel>,
+                           res: Response) => {
+  let foundCourse: CourseType | undefined = await coursesRepository.getCourseById(+req.params.id)
 
   if (foundCourse) {
     res.send(foundCourse)
@@ -38,10 +38,10 @@ coursesRouter.get('/:id', (req: RequestWithParams<UriParamsCourseIdModel>,
 coursesRouter.post('/',
   titleValidation,
   inputValidationMiddleware,
-  (req: RequestWithBody<CourseCreateInputModel>, 
+  async (req: RequestWithBody<CourseCreateInputModel>, 
   res: Response) => {
 
-    let newCourse = coursesRepository.createCourse(req.body.title)
+    let newCourse: CourseType = await coursesRepository.createCourse(req.body.title)
 
     res
       .status(HTTP_STATUSES.CREATED_201)
@@ -49,8 +49,8 @@ coursesRouter.post('/',
 
 })
 
-coursesRouter.delete('/:id', (req: RequestWithParams<UriParamsCourseIdModel>, res: Response) => {
-  const isDeleted = coursesRepository.deleteCourse(+req.params.id)
+coursesRouter.delete('/:id', async (req: RequestWithParams<UriParamsCourseIdModel>, res: Response) => {
+  const isDeleted = await coursesRepository.deleteCourse(+req.params.id)
 
   if (isDeleted) {
     res.send(204)
@@ -66,7 +66,7 @@ coursesRouter.delete('/__test__/data', (req: Request, res: Response) => {
 
 coursesRouter.put('/:id', 
   titleValidation,
-  (req: RequestWithParamsAndBody<UriParamsCourseIdModel,CourseUpdateInputModel>, res: Response) => {
+  async (req: RequestWithParamsAndBody<UriParamsCourseIdModel,CourseUpdateInputModel>, res: Response) => {
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {
@@ -75,7 +75,7 @@ coursesRouter.put('/:id',
               .json({ errors: errors.array() })
   }
   
-  const isUpdated = coursesRepository.updateCourse(+req.params.id, req.body.title)
+  const isUpdated = await coursesRepository.updateCourse(+req.params.id, req.body.title)
 
   if (isUpdated) {
     res.send(isUpdated)

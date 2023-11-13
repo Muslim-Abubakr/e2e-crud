@@ -24,37 +24,45 @@ exports.coursesRepository = {
         });
     },
     getCourseById(id) {
-        if (id) {
-            let findCourse = db_1.db.courses.find(i => i.id === id);
-            return findCourse;
-        }
+        return __awaiter(this, void 0, void 0, function* () {
+            if (id) {
+                let findCourse = db_1.db.courses.find(i => i.id === id);
+                return findCourse;
+            }
+        });
     },
     createCourse(title) {
-        const createdCourse = {
-            id: +(new Date()),
-            title: title
-        };
-        db_1.db.courses.push(createdCourse);
-        return createdCourse;
+        return __awaiter(this, void 0, void 0, function* () {
+            const createdCourse = {
+                id: +(new Date()),
+                title: title
+            };
+            db_1.db.courses.push(createdCourse);
+            return createdCourse;
+        });
     },
     deleteCourse(id) {
-        let deleteCourse = db_1.db.courses.filter(i => i.id !== id);
-        if (deleteCourse) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return __awaiter(this, void 0, void 0, function* () {
+            let deleteCourse = db_1.db.courses.filter(i => i.id !== id);
+            if (deleteCourse) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
     },
     updateCourse(id, title) {
-        const foundCourse = db_1.db.courses.find(i => i.id === id);
-        if (foundCourse) {
-            foundCourse.id = id,
-                foundCourse.title = title;
-            return foundCourse;
-        }
-        else {
-            return false;
-        }
+        return __awaiter(this, void 0, void 0, function* () {
+            let foundCourse = db_1.db.courses.find(i => i.id === id);
+            if (foundCourse) {
+                foundCourse.id = id,
+                    foundCourse.title = title;
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
     }
 };

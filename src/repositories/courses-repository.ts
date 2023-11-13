@@ -12,14 +12,14 @@ export const coursesRepository = {
         
     },
 
-    getCourseById(id: number): CourseType | undefined {
+    async getCourseById(id: number): Promise<CourseType | undefined> {
         if (id) {
             let findCourse = db.courses.find(i => i.id === id)
             return findCourse
         }
     },
 
-    createCourse(title: string) {
+    async createCourse(title: string): Promise<CourseType> {
         const createdCourse = {
             id: +(new Date()),
             title: title
@@ -29,7 +29,7 @@ export const coursesRepository = {
         return createdCourse
     },
 
-    deleteCourse(id: number) {
+    async deleteCourse(id: number) {
         let deleteCourse = db.courses.filter(i => i.id !== id)
 
         if(deleteCourse) {
@@ -39,13 +39,13 @@ export const coursesRepository = {
         }
     },
 
-    updateCourse(id: number, title: string) {
-        const foundCourse = db.courses.find(i => i.id === id)
+    async updateCourse(id: number, title: string): Promise<boolean>  {
+        let foundCourse = db.courses.find(i => i.id === id)
 
         if (foundCourse) {
             foundCourse.id = id,
             foundCourse.title = title
-            return foundCourse
+            return true
         } else {
             return false
         }
