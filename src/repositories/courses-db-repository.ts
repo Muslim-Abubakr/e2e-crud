@@ -2,7 +2,7 @@ import { db } from "../db/db";
 import { CourseType } from "../types";
 
 export const coursesRepository = {
-    async findCourse(title: string): Promise<CourseType[]> {
+     async findCourse(title: string): Promise<CourseType[]> {
         if (title) {
             let filteredCourse = db.courses.filter(i => i.title.indexOf(title) > -1)
             return filteredCourse;

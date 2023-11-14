@@ -45,7 +45,7 @@ usersRouter.get('/', async (req: RequestWithQuery<GetUsersQueryModel>,
   
   usersRouter.put('/:id', async (req: RequestWithParamsAndBody<UriParamsUsersIdModel,UpdateUsersModel>, 
     res: Response) => {
-      const isUpdated = usersRepository.updateUser(+req.params.id, req.body.userName)
+      const isUpdated: boolean = await usersRepository.updateUser(+req.params.id, req.body.userName)
 
       if (isUpdated) {
         return true

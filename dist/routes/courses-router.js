@@ -13,18 +13,18 @@ exports.coursesRouter = void 0;
 const express_1 = require("express");
 const db_1 = require("../db/db");
 const __1 = require("..");
-const courses_repository_1 = require("../repositories/courses-repository");
+const courses_in_memory_repository_1 = require("../repositories/courses-in-memory-repository");
 const express_validator_1 = require("express-validator");
 const titleValidation_1 = require("../middlewares/titleValidation");
 const input_validation_middleware_1 = require("../middlewares/input-validation-middleware");
 exports.coursesRouter = (0, express_1.Router)({});
 exports.coursesRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let findCoursePromise = yield courses_repository_1.coursesRepository.findCourse(req.query.title);
-    const foundCourse = findCoursePromise;
+    let findCoursePromise = courses_in_memory_repository_1.coursesRepository.findCourse(req.query.title);
+    const foundCourse = yield findCoursePromise;
     res.send(foundCourse);
 }));
 exports.coursesRouter.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let foundCourse = yield courses_repository_1.coursesRepository.getCourseById(+req.params.id);
+    let foundCourse = yield courses_in_memory_repository_1.coursesRepository.getCourseById(+req.params.id);
     if (foundCourse) {
         res.send(foundCourse);
     }
@@ -33,13 +33,13 @@ exports.coursesRouter.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0
     }
 }));
 exports.coursesRouter.post('/', titleValidation_1.titleValidation, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let newCourse = yield courses_repository_1.coursesRepository.createCourse(req.body.title);
+    let newCourse = yield courses_in_memory_repository_1.coursesRepository.createCourse(req.body.title);
     res
         .status(__1.HTTP_STATUSES.CREATED_201)
         .send(newCourse);
 }));
 exports.coursesRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const isDeleted = yield courses_repository_1.coursesRepository.deleteCourse(+req.params.id);
+    const isDeleted = yield courses_in_memory_repository_1.coursesRepository.deleteCourse(+req.params.id);
     if (isDeleted) {
         res.send(204);
     }
@@ -58,7 +58,7 @@ exports.coursesRouter.put('/:id', titleValidation_1.titleValidation, (req, res) 
             .status(400)
             .json({ errors: errors.array() });
     }
-    const isUpdated = yield courses_repository_1.coursesRepository.updateCourse(+req.params.id, req.body.title);
+    const isUpdated = yield courses_in_memory_repository_1.coursesRepository.updateCourse(+req.params.id, req.body.title);
     if (isUpdated) {
         res.send(isUpdated);
     }

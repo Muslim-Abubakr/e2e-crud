@@ -4,7 +4,7 @@ import { db } from './db/db'
 import { usersRouter } from './routes/users-router'
 import { coursesRouter } from './routes/courses-router'
 import bodyParser  from 'body-parser'
-import { authorizationMiddleware } from './middlewares/authorization' 
+
 
 export const app = express()
 
@@ -47,6 +47,12 @@ app.use(RouterPaths.users, usersRouter)
 
 app.use(RouterPaths.courses, coursesRouter)
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-}) 
+
+const startApp = async () => {
+  // await runDb()
+  app.listen(port, () => {
+    console.log(`Example app listening on port: ${port}`)
+  })
+}
+
+startApp()

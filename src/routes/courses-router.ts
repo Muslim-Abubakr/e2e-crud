@@ -7,7 +7,7 @@ import { CourseUpdateInputModel } from "../models/UpdateCourseModel"
 import { UriParamsCourseIdModel } from "../models/UriParamsCourseIdModel"
 import { CourseGetModel } from "../models/GetCoursesQueryModel"
 import { CourseViewModel } from "../models/ViewCourseModel"
-import { coursesRepository } from "../repositories/courses-repository"
+import { coursesRepository } from "../repositories/courses-in-memory-repository" 
 import { body, validationResult } from "express-validator"
 import { titleValidation } from "../middlewares/titleValidation"
 import { inputValidationMiddleware } from "../middlewares/input-validation-middleware"
@@ -18,9 +18,9 @@ export const coursesRouter = Router({})
 
 coursesRouter.get('/', async (req: RequestWithQuery<CourseGetModel>, 
                         res: Response) => {
-    let findCoursePromise: CourseType[] = await coursesRepository.findCourse(req.query.title)
+    let findCoursePromise: Promise<CourseType[]>  =  coursesRepository.findCourse(req.query.title)
+    const foundCourse = await findCoursePromise
     
-    const foundCourse = findCoursePromise
     res.send(foundCourse)
 })
 

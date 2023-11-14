@@ -37,7 +37,7 @@ exports.usersRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, fu
         .send(newUser);
 }));
 exports.usersRouter.put('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const isUpdated = users_repository_1.usersRepository.updateUser(+req.params.id, req.body.userName);
+    const isUpdated = yield users_repository_1.usersRepository.updateUser(+req.params.id, req.body.userName);
     if (isUpdated) {
         return true;
     }
