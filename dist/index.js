@@ -19,7 +19,7 @@ const users_router_1 = require("./routes/users-router");
 const courses_router_1 = require("./routes/courses-router");
 const body_parser_1 = __importDefault(require("body-parser"));
 exports.app = (0, express_1.default)();
-const port = 2001;
+const port = process.env.PORT || 2001;
 exports.app.use((0, body_parser_1.default)());
 // app.use(authorizationMiddleware)
 exports.HTTP_STATUSES = {
