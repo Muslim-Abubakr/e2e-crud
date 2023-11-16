@@ -30,13 +30,13 @@ export const coursesRepository = {
         return createdCourse
     },
 
-    async deleteCourse(id: number) {
+    async deleteCourse(id: number): Promise<boolean> {
         const deleteCourse = await client.db('Base').collection<CourseType>("Courses").deleteOne({id: id})
         return deleteCourse.deletedCount === 1
     },
 
     async updateCourse(id: number, title: string): Promise<CourseType | boolean>  {
-        const updateCourse = await client.db('Base').collection<CourseType>("Courses").updateOne({id: id},{$set: {title: title}})
+        const updateCourse = await client.db('Base').collection<CourseType>("Courses").updateOne({id: id}, {$set: {title: title}})
         return updateCourse.matchedCount === 1
     }
     

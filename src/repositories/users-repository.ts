@@ -10,9 +10,14 @@ export const usersRepository = {
         }
     },
 
-    async getUserById(id: number): Promise<UserType | undefined> {
-        const foundUser = db.users.find(u => u.id === id)
-        return foundUser
+    async getUserById(id: number): Promise<UserType | null> {
+        const result = await client.db('Base').collection<UserType>('users').findOne({ id: id });
+        
+        if (result) {
+            return result
+        } else {
+            return null
+        }
     },
 
     async createUser(userName: string): Promise<UserType> {
@@ -20,29 +25,18 @@ export const usersRepository = {
             id: +(new Date()),
             userName: userName
         }
-
-        db.users.push(newUser)
+        await client.db('Base').collection<UserType>('users').insertOne(newUser)
         return newUser
     },
 
-    async updateUser(id: number, userName: string): Promise<boolean> {
-        const foundUser =  db.users.find(u => u.id === id)
-
-        if (foundUser) {
-            foundUser.userName = userName
-            return true
-        } else {
-            return false
-        }
+    async updateUser(id: number, userName: string): Promise<UserType | boolean> {
+        const updateUser = await client.db('Base').collection<UserType>('users').updateOne({id: id}, {$set: {userName: userName}})
+        return updateUser.matchedCount === 1
     },
 
     async deleteUser(id: number): Promise<boolean> {
-        const deleteUser = db.users.filter(u => u.id !== id)
-
-        if (deleteUser) {
-            return true
-        } else {
-            return false
-        }
+        const deleteUser = await client.db('Base').collection<UserType>('users').deleteOne({id: id})
+        return deleteUser.deletedCount === 1
     }
 }
+

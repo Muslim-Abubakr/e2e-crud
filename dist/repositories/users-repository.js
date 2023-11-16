@@ -24,8 +24,13 @@ exports.usersRepository = {
     },
     getUserById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const foundUser = db_1.db.users.find(u => u.id === id);
-            return foundUser;
+            const result = yield db_1.client.db('Base').collection('users').findOne({ id: id });
+            if (result) {
+                return result;
+            }
+            else {
+                return null;
+            }
         });
     },
     createUser(userName) {
@@ -34,31 +39,20 @@ exports.usersRepository = {
                 id: +(new Date()),
                 userName: userName
             };
-            db_1.db.users.push(newUser);
+            yield db_1.client.db('Base').collection('users').insertOne(newUser);
             return newUser;
         });
     },
     updateUser(id, userName) {
         return __awaiter(this, void 0, void 0, function* () {
-            const foundUser = db_1.db.users.find(u => u.id === id);
-            if (foundUser) {
-                foundUser.userName = userName;
-                return true;
-            }
-            else {
-                return false;
-            }
+            const updateUser = yield db_1.client.db('Base').collection('users').updateOne({ id: id }, { $set: { userName: userName } });
+            return updateUser.matchedCount === 1;
         });
     },
     deleteUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const deleteUser = db_1.db.users.filter(u => u.id !== id);
-            if (deleteUser) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            const deleteUser = yield db_1.client.db('Base').collection('users').deleteOne({ id: id });
+            return deleteUser.deletedCount === 1;
         });
     }
 };
