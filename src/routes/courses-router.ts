@@ -34,8 +34,7 @@ coursesRouter.get('/:id', async (req: RequestWithParams<UriParamsCourseIdModel>,
 })
 
 coursesRouter.post('/',
-  titleValidation,
-  inputValidationMiddleware,
+ 
   async (req: RequestWithBody<CourseCreateInputModel>, 
   res: Response) => {
 
