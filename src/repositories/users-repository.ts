@@ -1,13 +1,12 @@
-import { db } from "../db/db";
+import { client, db } from "../db/db";
 import { UserType } from "../types";
 
 export const usersRepository = {
     async findUsers(userName: string): Promise<UserType[]> {
         if (userName) {
-            let filteredUser = db.users.filter(i => i.userName.indexOf(userName) > -1)
-            return filteredUser
+            return client.db('Base').collection<UserType>('users').find({userName: {$regex: userName}}).toArray()
         } else {
-            return db.users
+            return client.db('Base').collection<UserType>('users').find({}).toArray()
         }
     },
 

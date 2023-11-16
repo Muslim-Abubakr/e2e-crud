@@ -15,11 +15,10 @@ exports.usersRepository = {
     findUsers(userName) {
         return __awaiter(this, void 0, void 0, function* () {
             if (userName) {
-                let filteredUser = db_1.db.users.filter(i => i.userName.indexOf(userName) > -1);
-                return filteredUser;
+                return db_1.client.db('Base').collection('users').find({ userName: { $regex: userName } }).toArray();
             }
             else {
-                return db_1.db.users;
+                return db_1.client.db('Base').collection('users').find({}).toArray();
             }
         });
     },
