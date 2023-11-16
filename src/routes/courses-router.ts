@@ -6,9 +6,8 @@ import { CourseCreateInputModel } from "../models/CreateCourseModel"
 import { CourseUpdateInputModel } from "../models/UpdateCourseModel"
 import { UriParamsCourseIdModel } from "../models/UriParamsCourseIdModel"
 import { CourseGetModel } from "../models/GetCoursesQueryModel"
-import { CourseViewModel } from "../models/ViewCourseModel"
-import { coursesRepository } from "../repositories/courses-in-memory-repository" 
-import { body, validationResult } from "express-validator"
+import { coursesRepository } from "../repositories/courses-in-db-repository" 
+import { validationResult } from "express-validator"
 import { titleValidation } from "../middlewares/titleValidation"
 import { inputValidationMiddleware } from "../middlewares/input-validation-middleware"
 import { CourseType } from "../types"
@@ -18,15 +17,14 @@ export const coursesRouter = Router({})
 
 coursesRouter.get('/', async (req: RequestWithQuery<CourseGetModel>, 
                         res: Response) => {
-    let findCoursePromise: Promise<CourseType[]>  =  coursesRepository.findCourse(req.query.title)
-    const foundCourse = await findCoursePromise
+    let findCourse: CourseType[]  =  await coursesRepository.findCourse(req.query.title)
     
-    res.send(foundCourse)
+    res.send(findCourse)
 })
 
 coursesRouter.get('/:id', async (req: RequestWithParams<UriParamsCourseIdModel>,
                            res: Response) => {
-  let foundCourse: CourseType | undefined = await coursesRepository.getCourseById(+req.params.id)
+  let foundCourse: CourseType | null | undefined = await coursesRepository.getCourseById(+req.params.id)
 
   if (foundCourse) {
     res.send(foundCourse)
@@ -78,7 +76,8 @@ coursesRouter.put('/:id',
   const isUpdated = await coursesRepository.updateCourse(+req.params.id, req.body.title)
 
   if (isUpdated) {
-    res.send(isUpdated)
+    const findCourse = await coursesRepository.getCourseById(+req.params.id)
+    res.send(findCourse)
   } else {
     return false
   }

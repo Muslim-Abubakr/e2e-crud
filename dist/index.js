@@ -15,11 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RouterPaths = exports.HTTP_STATUSES = exports.app = void 0;
 const express_1 = __importDefault(require("express"));
 const db_1 = require("./db/db");
+const db_2 = require("./db/db");
 const users_router_1 = require("./routes/users-router");
 const courses_router_1 = require("./routes/courses-router");
 const body_parser_1 = __importDefault(require("body-parser"));
 exports.app = (0, express_1.default)();
-const port = process.env.PORT || 2001;
+const port = 2002;
 exports.app.use((0, body_parser_1.default)());
 // app.use(authorizationMiddleware)
 exports.HTTP_STATUSES = {
@@ -46,7 +47,7 @@ exports.app.delete('/__test__/data', (req, res) => {
 exports.app.use(exports.RouterPaths.users, users_router_1.usersRouter);
 exports.app.use(exports.RouterPaths.courses, courses_router_1.coursesRouter);
 const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
-    // await runDb()
+    yield (0, db_2.runDb)();
     exports.app.listen(port, () => {
         console.log(`Example app listening on port: ${port}`);
     });

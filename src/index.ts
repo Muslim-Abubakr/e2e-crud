@@ -9,7 +9,7 @@ import bodyParser  from 'body-parser'
 
 export const app = express()
 
-const port =  2001
+const port =  2002
 
 app.use(bodyParser())
 // app.use(authorizationMiddleware)

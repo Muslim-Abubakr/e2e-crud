@@ -1,25 +1,28 @@
 import { db } from "../db/db";
 import { CourseType } from "../types";
+import { client } from "../db/db";
 
 export const coursesRepository = {
      async findCourse(title: string): Promise<CourseType[]> {
         if (title) {
-            let filteredCourse = db.courses.filter(i => i.title.indexOf(title) > -1)
-            return filteredCourse;
+            return client.db('Base').collection<CourseType>("Courses").find({ title: {$regex: title} }).toArray()
         } else {
-            return db.courses
+            return client.db('Base').collection<CourseType>("Courses").find({}).toArray()
         }
+    },
+
+    async getCourseById(id: number): Promise<CourseType | undefined | null> {
+        let product = client.db('Base').collection<CourseType>("Course").findOne({id: id})
         
-    },
-
-    async getCourseById(id: number): Promise<CourseType | undefined> {
-        if (id) {
-            let findCourse = db.courses.find(i => i.id === id)
-            return findCourse
+        if (product) {
+            return product
+        } else {
+            return null
         }
     },
 
-    async createCourse(title: string): Promise<CourseType> {
+    async createCourse(title: string, id: number): Promise<CourseType> {
+        return client.db('Base').collection<CourseType>("Courses").insertOne({ "id": id, "title": title })
         const createdCourse = {
             id: +(new Date()),
             title: title
@@ -39,13 +42,13 @@ export const coursesRepository = {
         }
     },
 
-    async updateCourse(id: number, title: string): Promise<boolean>  {
+    async updateCourse(id: number, title: string): Promise<CourseType | boolean>  {
         let foundCourse = db.courses.find(i => i.id === id)
 
         if (foundCourse) {
             foundCourse.id = id,
             foundCourse.title = title
-            return true
+            return foundCourse
         } else {
             return false
         }
