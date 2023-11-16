@@ -11,21 +11,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.coursesRepository = void 0;
 const db_1 = require("../db/db");
-const db_2 = require("../db/db");
 exports.coursesRepository = {
     findCourse(title) {
         return __awaiter(this, void 0, void 0, function* () {
             if (title) {
-                return db_2.client.db('Base').collection("Courses").find({ title: { $regex: title } }).toArray();
+                return db_1.client.db('Base').collection("Courses").find({ title: { $regex: title } }).toArray();
             }
             else {
-                return db_2.client.db('Base').collection("Courses").find({}).toArray();
+                return db_1.client.db('Base').collection("Courses").find({}).toArray();
             }
         });
     },
     getCourseById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            let course = yield db_2.client.db('Base').collection("Courses").findOne({ id: id });
+            let course = yield db_1.client.db('Base').collection("Courses").findOne({ id: id });
             if (course) {
                 return course;
             }
@@ -34,38 +33,26 @@ exports.coursesRepository = {
             }
         });
     },
-    createCourse(title, id) {
+    createCourse(title) {
         return __awaiter(this, void 0, void 0, function* () {
             const createdCourse = {
                 id: +(new Date()),
                 title: title
             };
-            yield db_2.client.db('Base').collection("Courses").insertOne(createdCourse);
+            yield db_1.client.db('Base').collection("Courses").insertOne(createdCourse);
             return createdCourse;
         });
     },
     deleteCourse(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            let deleteCourse = db_1.db.courses.filter(i => i.id !== id);
-            if (deleteCourse) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            const deleteCourse = yield db_1.client.db('Base').collection("Courses").deleteOne({ id: id });
+            return deleteCourse.deletedCount === 1;
         });
     },
     updateCourse(id, title) {
         return __awaiter(this, void 0, void 0, function* () {
-            let foundCourse = db_1.db.courses.find(i => i.id === id);
-            if (foundCourse) {
-                foundCourse.id = id,
-                    foundCourse.title = title;
-                return foundCourse;
-            }
-            else {
-                return false;
-            }
+            const updateCourse = yield db_1.client.db('Base').collection("Courses").updateOne({ id: id }, { $set: { title: title } });
+            return updateCourse.matchedCount === 1;
         });
     }
 };

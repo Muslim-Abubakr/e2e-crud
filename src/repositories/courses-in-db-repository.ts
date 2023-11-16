@@ -21,7 +21,7 @@ export const coursesRepository = {
         }
     },
 
-    async createCourse(title: string, id: number): Promise<CourseType> {
+    async createCourse(title: string): Promise<CourseType> {
         const createdCourse = {
             id: +(new Date()),
             title: title
@@ -31,25 +31,13 @@ export const coursesRepository = {
     },
 
     async deleteCourse(id: number) {
-        let deleteCourse = db.courses.filter(i => i.id !== id)
-
-        if(deleteCourse) {
-            return true
-        } else {
-            return false
-        }
+        const deleteCourse = await client.db('Base').collection<CourseType>("Courses").deleteOne({id: id})
+        return deleteCourse.deletedCount === 1
     },
 
     async updateCourse(id: number, title: string): Promise<CourseType | boolean>  {
-        let foundCourse = db.courses.find(i => i.id === id)
-
-        if (foundCourse) {
-            foundCourse.id = id,
-            foundCourse.title = title
-            return foundCourse
-        } else {
-            return false
-        }
+        const updateCourse = await client.db('Base').collection<CourseType>("Courses").updateOne({id: id},{$set: {title: title}})
+        return updateCourse.matchedCount === 1
     }
     
 }
