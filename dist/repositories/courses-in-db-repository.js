@@ -25,9 +25,9 @@ exports.coursesRepository = {
     },
     getCourseById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            let product = db_2.client.db('Base').collection("Course").findOne({ id: id });
-            if (product) {
-                return product;
+            let course = yield db_2.client.db('Base').collection("Courses").findOne({ id: id });
+            if (course) {
+                return course;
             }
             else {
                 return null;
@@ -36,12 +36,11 @@ exports.coursesRepository = {
     },
     createCourse(title, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return db_2.client.db('Base').collection("Courses").insertOne({ "id": id, "title": title });
             const createdCourse = {
                 id: +(new Date()),
                 title: title
             };
-            db_1.db.courses.push(createdCourse);
+            yield db_2.client.db('Base').collection("Courses").insertOne(createdCourse);
             return createdCourse;
         });
     },

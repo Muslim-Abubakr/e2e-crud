@@ -12,23 +12,21 @@ export const coursesRepository = {
     },
 
     async getCourseById(id: number): Promise<CourseType | undefined | null> {
-        let product = client.db('Base').collection<CourseType>("Course").findOne({id: id})
+        let course: CourseType | null = await client.db('Base').collection<CourseType>("Courses").findOne({id: id})
         
-        if (product) {
-            return product
+        if (course) {
+            return course
         } else {
             return null
         }
     },
 
     async createCourse(title: string, id: number): Promise<CourseType> {
-        return client.db('Base').collection<CourseType>("Courses").insertOne({ "id": id, "title": title })
         const createdCourse = {
             id: +(new Date()),
             title: title
         }
-
-        db.courses.push(createdCourse)
+        await client.db('Base').collection<CourseType>("Courses").insertOne(createdCourse)
         return createdCourse
     },
 
