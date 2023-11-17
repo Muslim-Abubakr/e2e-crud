@@ -1,6 +1,5 @@
 import express from 'express'
 import { Request, Response, NextFunction } from 'express'
-import { db } from './db/db'
 import { runDb } from './db/db'
 import { usersRouter } from './routes/users-router'
 import { coursesRouter } from './routes/courses-router'
@@ -13,7 +12,6 @@ const port =  2002
 
 app.use(bodyParser())
 // app.use(authorizationMiddleware)
-
 
 export const HTTP_STATUSES = {
   OK200: 200,
@@ -35,14 +33,7 @@ app.use(jsonBodyMiddleware)
 
 
 app.get('/', (req: Request, res: Response) => {
-    res.send('My-server')
-})
-
-
-app.delete('/__test__/data', (req: Request, res: Response) => {
-  db.courses = []
-  res.sendStatus(HTTP_STATUSES.NO_CONTENT)
-})
+    res.send('My-server')})
 
 app.use(RouterPaths.users, usersRouter)
 

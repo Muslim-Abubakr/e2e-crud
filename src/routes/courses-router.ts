@@ -1,5 +1,4 @@
 import { Request, Response, Router } from "express"
-import { db } from "../db/db"
 import { HTTP_STATUSES } from ".."
 import { RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../types"
 import { CourseCreateInputModel } from "../models/CreateCourseModel"
@@ -26,7 +25,7 @@ coursesRouter.get('/:id', async (req: RequestWithParams<UriParamsCourseIdModel>,
     if (foundCourse) {
         res.send(foundCourse)
     } else {
-      res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
+        res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
     }
 })
 
@@ -50,11 +49,6 @@ coursesRouter.delete('/:id', async (req: RequestWithParams<UriParamsCourseIdMode
   } else {
     res.send(404)
   }
-})
-
-coursesRouter.delete('/__test__/data', (req: Request, res: Response) => {
-  db.courses = []
-  res.sendStatus(HTTP_STATUSES.NO_CONTENT)
 })
 
 coursesRouter.put('/:id', 
