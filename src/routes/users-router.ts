@@ -6,6 +6,7 @@ import { UpdateUsersModel } from "../models/UpdateUsersModel"
 import { UriParamsUsersIdModel } from "../models/UriParamsUsersIdModel"
 import { ViewUserModel } from "../models/ViewUserModel"
 import { usersRepository } from "../repositories/users-repository"
+import { inputValidationMiddleware } from "../middlewares/input-validation-middleware"
 
 export const usersRouter = Router({})
 
@@ -18,8 +19,8 @@ usersRouter.get('/', async (req: RequestWithQuery<GetUsersQueryModel>,
   })
   
   usersRouter.get('/:id', async (req: RequestWithParams<UriParamsUsersIdModel>, 
-    res: Response<ViewUserModel>) => {
-    const user: UserType | undefined = await usersRepository.getUserById(+req.params.id)
+    res: Response<ViewUserModel | null>) => {
+    const user: UserType | null = await usersRepository.getUserById(+req.params.id)
 
     res.send(user)
   })
@@ -45,7 +46,7 @@ usersRouter.get('/', async (req: RequestWithQuery<GetUsersQueryModel>,
   
   usersRouter.put('/:id', async (req: RequestWithParamsAndBody<UriParamsUsersIdModel,UpdateUsersModel>, 
     res: Response) => {
-      const isUpdated: boolean = await usersRepository.updateUser(+req.params.id, req.body.userName)
+      const isUpdated: boolean | UserType = await usersRepository.updateUser(+req.params.id, req.body.userName)
 
       if (isUpdated) {
         return true

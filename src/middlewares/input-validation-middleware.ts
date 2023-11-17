@@ -7,5 +7,7 @@ export const inputValidationMiddleware = (req: Request, res: Response, next: Nex
 
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() })
+    } else {
+        next()
     }
 }

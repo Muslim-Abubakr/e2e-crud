@@ -9,34 +9,30 @@ import { CourseGetModel } from "../models/GetCoursesQueryModel"
 import { coursesRepository } from "../repositories/courses-in-db-repository" 
 import { validationResult } from "express-validator"
 import { titleValidation } from "../middlewares/titleValidation"
-import { inputValidationMiddleware } from "../middlewares/input-validation-middleware"
 import { CourseType } from "../types"
 
 export const coursesRouter = Router({})
 
 
-coursesRouter.get('/', async (req: RequestWithQuery<CourseGetModel>, 
-                        res: Response) => {
+coursesRouter.get('/', async (req: RequestWithQuery<CourseGetModel>, res: Response) => {
     let findCourse: CourseType[]  =  await coursesRepository.findCourse(req.query.title)
     
     res.send(findCourse)
 })
 
-coursesRouter.get('/:id', async (req: RequestWithParams<UriParamsCourseIdModel>,
-                           res: Response) => {
-  let foundCourse: CourseType | null | undefined = await coursesRepository.getCourseById(+req.params.id)
+coursesRouter.get('/:id', async (req: RequestWithParams<UriParamsCourseIdModel>, res: Response) => {
+    let foundCourse: CourseType | null | undefined = await coursesRepository.getCourseById(+req.params.id)
 
-  if (foundCourse) {
-    res.send(foundCourse)
-  } else {
-    res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
-  }
+    if (foundCourse) {
+        res.send(foundCourse)
+    } else {
+      res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
+    }
 })
 
 coursesRouter.post('/',
- 
-  async (req: RequestWithBody<CourseCreateInputModel>, 
-  res: Response) => {
+  titleValidation,
+  async (req: RequestWithBody<CourseCreateInputModel>, res: Response) => {
 
     let newCourse: CourseType = await coursesRepository.createCourse(req.body.title)
 

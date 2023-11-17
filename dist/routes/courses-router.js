@@ -30,7 +30,7 @@ exports.coursesRouter.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0
         res.sendStatus(__1.HTTP_STATUSES.NOT_FOUND_404);
     }
 }));
-exports.coursesRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.coursesRouter.post('/', titleValidation_1.titleValidation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let newCourse = yield courses_in_db_repository_1.coursesRepository.createCourse(req.body.title);
     res
         .status(__1.HTTP_STATUSES.CREATED_201)
