@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.coursesRepository = void 0;
 const db_1 = require("../db/db");
-const courseCollection = db_1.client.db('Base').collection("Courses");
 exports.coursesRepository = {
     findCourse(title) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -19,12 +18,12 @@ exports.coursesRepository = {
             if (title) {
                 filter.title = { $regex: title };
             }
-            return courseCollection.find({}).toArray();
+            return db_1.courseCollection.find({}).toArray();
         });
     },
     getCourseById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            let course = yield courseCollection.findOne({ id: id });
+            let course = yield db_1.courseCollection.findOne({ id: id });
             if (course) {
                 return course;
             }
@@ -39,19 +38,19 @@ exports.coursesRepository = {
                 id: +(new Date()),
                 title: title
             };
-            yield courseCollection.insertOne(createdCourse);
+            yield db_1.courseCollection.insertOne(createdCourse);
             return createdCourse;
         });
     },
     deleteCourse(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const deleteCourse = yield courseCollection.deleteOne({ id: id });
+            const deleteCourse = yield db_1.courseCollection.deleteOne({ id: id });
             return deleteCourse.deletedCount === 1;
         });
     },
     updateCourse(id, title) {
         return __awaiter(this, void 0, void 0, function* () {
-            const updateCourse = yield courseCollection.updateOne({ id: id }, { $set: { title: title } });
+            const updateCourse = yield db_1.courseCollection.updateOne({ id: id }, { $set: { title: title } });
             return updateCourse.matchedCount === 1;
         });
     }

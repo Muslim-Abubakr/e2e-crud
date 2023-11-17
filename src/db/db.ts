@@ -1,9 +1,13 @@
 import { DBType } from "../types"
 import { MongoClient } from 'mongodb'
+import { CourseType, UserType } from "../types"
 
 const mongoUri = process.env.mongoURI || "mongodb://0.0.0.0:27017"
 
-export const client = new MongoClient(mongoUri)
+const client = new MongoClient(mongoUri)
+const db = client.db('Base')
+export const courseCollection = db.collection<CourseType>("Courses")
+export const userCollection = db.collection<UserType>('users')
 
 export async function runDb() {
   try {
@@ -18,27 +22,3 @@ export async function runDb() {
     await client.close()
   }
 }
-
-
-
-
-export const db: DBType  = {
-    courses: [
-      {id: 1, title: 'front-end'},
-      {id: 2, title: 'back-end'}, 
-      {id: 3, title: 'automation qa'}, 
-      {id: 4, title: 'devops'}
-    ],
-
-    users: [
-        {id: 1, userName: 'Muslim'},
-        {id: 2, userName: 'Alan'}
-    ],
-
-    studentCourseBindings: [
-        {studentId: 1, courseId: 1, date: new Date(2023, 10, 1) },
-        {studentId: 2, courseId: 2, date: new Date(2023, 10, 1) },
-        {studentId: 3, courseId: 3, date: new Date(2023, 10, 1) }
-    ]
-
-  }

@@ -9,23 +9,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.db = exports.runDb = exports.client = void 0;
+exports.db = exports.runDb = exports.userCollection = exports.courseCollection = void 0;
 const mongodb_1 = require("mongodb");
 const mongoUri = process.env.mongoURI || "mongodb://0.0.0.0:27017";
-exports.client = new mongodb_1.MongoClient(mongoUri);
+const client = new mongodb_1.MongoClient(mongoUri);
+exports.courseCollection = client.db('Base').collection("Courses");
+exports.userCollection = client.db('Base').collection('users');
 function runDb() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             // Connect the client to the server
-            yield exports.client.connect();
+            yield client.connect();
             // Establish and verify connection
-            yield exports.client.db('courses').command({ ping: 1 });
+            yield client.db('courses').command({ ping: 1 });
             console.log("Connecting succesfully to mongo server");
         }
         catch (_a) {
             console.log(`Can't connect to db`);
             // Ensures that the client will close when you finish/error
-            yield exports.client.close();
+            yield client.close();
         }
     });
 }

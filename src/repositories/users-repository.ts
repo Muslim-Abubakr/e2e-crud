@@ -1,7 +1,6 @@
-import { client, db } from "../db/db";
 import { UserType } from "../types";
+import { userCollection } from "../db/db";
 
-const userCollection = client.db('Base').collection<UserType>('users')
 
 export const usersRepository = {
     async findUsers(userName: string): Promise<UserType[]> {

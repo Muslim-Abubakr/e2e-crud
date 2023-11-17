@@ -1,8 +1,6 @@
-import { db } from "../db/db";
 import { CourseType } from "../types";
-import { client } from "../db/db";
+import { courseCollection } from "../db/db";
 
-const courseCollection = client.db('Base').collection<CourseType>("Courses")
 
 export const coursesRepository = {
      async findCourse(title: string): Promise<CourseType[]> {

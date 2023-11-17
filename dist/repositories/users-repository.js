@@ -11,21 +11,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersRepository = void 0;
 const db_1 = require("../db/db");
-const userCollection = db_1.client.db('Base').collection('users');
 exports.usersRepository = {
     findUsers(userName) {
         return __awaiter(this, void 0, void 0, function* () {
             if (userName) {
-                return userCollection.find({ userName: { $regex: userName } }).toArray();
+                return db_1.userCollection.find({ userName: { $regex: userName } }).toArray();
             }
             else {
-                return userCollection.find({}).toArray();
+                return db_1.userCollection.find({}).toArray();
             }
         });
     },
     getUserById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = userCollection.findOne({ id: id });
+            const result = db_1.userCollection.findOne({ id: id });
             if (result) {
                 return result;
             }
@@ -40,19 +39,19 @@ exports.usersRepository = {
                 id: +(new Date()),
                 userName: userName
             };
-            yield userCollection.insertOne(newUser);
+            yield db_1.userCollection.insertOne(newUser);
             return newUser;
         });
     },
     updateUser(id, userName) {
         return __awaiter(this, void 0, void 0, function* () {
-            const updateUser = yield userCollection.updateOne({ id: id }, { $set: { userName: userName } });
+            const updateUser = yield db_1.userCollection.updateOne({ id: id }, { $set: { userName: userName } });
             return updateUser.matchedCount === 1;
         });
     },
     deleteUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const deleteUser = yield userCollection.deleteOne({ id: id });
+            const deleteUser = yield db_1.userCollection.deleteOne({ id: id });
             return deleteUser.deletedCount === 1;
         });
     }
