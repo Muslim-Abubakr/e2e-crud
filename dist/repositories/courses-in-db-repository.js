@@ -11,20 +11,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.coursesRepository = void 0;
 const db_1 = require("../db/db");
+const courseCollection = db_1.client.db('Base').collection("Courses");
 exports.coursesRepository = {
     findCourse(title) {
         return __awaiter(this, void 0, void 0, function* () {
+            const filter = {};
             if (title) {
-                return db_1.client.db('Base').collection("Courses").find({ title: { $regex: title } }).toArray();
+                filter.title = { $regex: title };
             }
-            else {
-                return db_1.client.db('Base').collection("Courses").find({}).toArray();
-            }
+            return courseCollection.find({}).toArray();
         });
     },
     getCourseById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            let course = yield db_1.client.db('Base').collection("Courses").findOne({ id: id });
+            let course = yield courseCollection.findOne({ id: id });
             if (course) {
                 return course;
             }
@@ -39,19 +39,19 @@ exports.coursesRepository = {
                 id: +(new Date()),
                 title: title
             };
-            yield db_1.client.db('Base').collection("Courses").insertOne(createdCourse);
+            yield courseCollection.insertOne(createdCourse);
             return createdCourse;
         });
     },
     deleteCourse(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const deleteCourse = yield db_1.client.db('Base').collection("Courses").deleteOne({ id: id });
+            const deleteCourse = yield courseCollection.deleteOne({ id: id });
             return deleteCourse.deletedCount === 1;
         });
     },
     updateCourse(id, title) {
         return __awaiter(this, void 0, void 0, function* () {
-            const updateCourse = yield db_1.client.db('Base').collection("Courses").updateOne({ id: id }, { $set: { title: title } });
+            const updateCourse = yield courseCollection.updateOne({ id: id }, { $set: { title: title } });
             return updateCourse.matchedCount === 1;
         });
     }
