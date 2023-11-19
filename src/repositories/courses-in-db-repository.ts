@@ -20,7 +20,7 @@ export const coursesRepository = {
             return course
         } else {
             return null
-        }
+        }   
     },
 
     async createCourse(title: string): Promise<CourseType> {

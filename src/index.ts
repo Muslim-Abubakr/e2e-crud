@@ -33,7 +33,8 @@ app.use(jsonBodyMiddleware)
 
 
 app.get('/', (req: Request, res: Response) => {
-    res.send('My-server')})
+    res.send('My-server')
+  })
 
 app.use(RouterPaths.users, usersRouter)
 
