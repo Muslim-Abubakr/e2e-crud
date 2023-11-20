@@ -2,7 +2,7 @@ import { DBType } from "../types"
 import { MongoClient } from 'mongodb'
 import { CourseType, UserType } from "../types"
 
-const mongoUri = process.env.mongoURI || "mongodb://0.0.0.0:27017"
+const mongoUri = process.env.mongoURI
 
 const client = new MongoClient(mongoUri)
 const db = client.db('Base')
