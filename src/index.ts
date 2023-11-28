@@ -10,7 +10,7 @@ export const app = express()
 
 const port =  2002
 
-app.use(bodyParser())
+app.use(bodyParser.json())
 // app.use(authorizationMiddleware)
 
 export const HTTP_STATUSES = {
@@ -27,7 +27,6 @@ export const RouterPaths = {
   users: '/users',
   __test__: '__test__'
 }
-
 const jsonBodyMiddleware = express.json()
 app.use(jsonBodyMiddleware)
 

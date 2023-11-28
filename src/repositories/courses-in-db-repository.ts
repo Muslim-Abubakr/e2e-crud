@@ -32,6 +32,7 @@ export const coursesRepository = {
         return createdCourse
     },
 
+
     async deleteCourse(id: number): Promise<boolean> {
         const deleteCourse = await courseCollection.deleteOne({id: id})
         return deleteCourse.deletedCount === 1

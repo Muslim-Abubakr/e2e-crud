@@ -65,7 +65,7 @@ coursesRouter.put('/:id',
   const isUpdated = await coursesRepository.updateCourse(+req.params.id, req.body.title)
 
   if (isUpdated) {
-    const findCourse = await coursesRepository.getCourseById(+req.params.id)
+    const findCourse =  coursesRepository.getCourseById(+req.params.id)
     res.send(findCourse)
   } else {
     return false
