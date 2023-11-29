@@ -10,24 +10,15 @@ export const coursesRepository = {
             filter.title = {$regex: title}
         }
 
-        return courseCollection.find({}).toArray()
+        return await courseCollection.find({}).toArray()
     },
 
-    async getCourseById(id: number): Promise<CourseType | undefined | null> {
+    async getCourseById(id: number): Promise<CourseType | null> {
         let course: CourseType | null = await courseCollection.findOne({id: id})
-        
-        if (course) {
-            return course
-        } else {
-            return null
-        }   
+        return course
     },
 
-    async createCourse(title: string): Promise<CourseType> {
-        const createdCourse = {
-            id: +(new Date()),
-            title: title
-        }
+    async createCourse(createdCourse: CourseType): Promise<CourseType> {
         await courseCollection.insertOne(createdCourse)
         return createdCourse
     },

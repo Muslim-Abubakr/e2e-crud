@@ -5,7 +5,7 @@ import { CourseCreateInputModel } from "../models/CreateCourseModel"
 import { CourseUpdateInputModel } from "../models/UpdateCourseModel"
 import { UriParamsCourseIdModel } from "../models/UriParamsCourseIdModel"
 import { CourseGetModel } from "../models/GetCoursesQueryModel"
-import { coursesRepository } from "../repositories/courses-in-db-repository" 
+import { coursesService } from "../domain/courses-srevice"  
 import { validationResult } from "express-validator"
 import { titleValidation } from "../middlewares/titleValidation"
 import { CourseType } from "../types"
@@ -14,13 +14,13 @@ export const coursesRouter = Router({})
 
 
 coursesRouter.get('/', async (req: RequestWithQuery<CourseGetModel>, res: Response) => {
-    let findCourse: CourseType[]  =  await coursesRepository.findCourse(req.query.title)
+    let findCourse: CourseType[]  =  await coursesService.findCourse(req.query.title)
     
     res.send(findCourse)
 })
 
 coursesRouter.get('/:id', async (req: RequestWithParams<UriParamsCourseIdModel>, res: Response) => {
-    let foundCourse: CourseType | null | undefined = await coursesRepository.getCourseById(+req.params.id)
+    let foundCourse: CourseType | null | undefined = await coursesService.getCourseById(+req.params.id)
 
     if (foundCourse) {
         res.send(foundCourse)
@@ -33,7 +33,7 @@ coursesRouter.post('/',
   titleValidation,
   async (req: RequestWithBody<CourseCreateInputModel>, res: Response) => {
 
-    let newCourse: CourseType = await coursesRepository.createCourse(req.body.title)
+    let newCourse: CourseType = await coursesService.createCourse(req.body.title)
 
     res
       .status(HTTP_STATUSES.CREATED_201)
@@ -42,7 +42,7 @@ coursesRouter.post('/',
 })
 
 coursesRouter.delete('/:id', async (req: RequestWithParams<UriParamsCourseIdModel>, res: Response) => {
-  const isDeleted = await coursesRepository.deleteCourse(+req.params.id)
+  const isDeleted = await coursesService.deleteCourse(+req.params.id)
 
   if (isDeleted) {
     res.send(204)
@@ -62,10 +62,10 @@ coursesRouter.put('/:id',
               .json({ errors: errors.array() })
   }
   
-  const isUpdated = await coursesRepository.updateCourse(+req.params.id, req.body.title)
+  const isUpdated = await coursesService.updateCourse(+req.params.id, req.body.title)
 
   if (isUpdated) {
-    const findCourse =  coursesRepository.getCourseById(+req.params.id)
+    const findCourse =  coursesService.getCourseById(+req.params.id)
     res.send(findCourse)
   } else {
     return false

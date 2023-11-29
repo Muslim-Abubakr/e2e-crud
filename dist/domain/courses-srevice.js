@@ -9,40 +9,39 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.coursesRepository = void 0;
-const db_1 = require("../db/db");
-exports.coursesRepository = {
+exports.coursesService = void 0;
+const courses_in_db_repository_1 = require("../repositories/courses-in-db-repository");
+exports.coursesService = {
     findCourse(title) {
         return __awaiter(this, void 0, void 0, function* () {
-            const filter = {};
-            if (title) {
-                filter.title = { $regex: title };
-            }
-            return yield db_1.courseCollection.find({}).toArray();
+            return yield courses_in_db_repository_1.coursesRepository.findCourse(title);
         });
     },
     getCourseById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            let course = yield db_1.courseCollection.findOne({ id: id });
-            return course;
+            return yield courses_in_db_repository_1.coursesRepository.getCourseById(id);
         });
     },
-    createCourse(createdCourse) {
+    createCourse(title) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield db_1.courseCollection.insertOne(createdCourse);
+            const newCourse = {
+                id: +(new Date()),
+                title: title
+            };
+            const createdCourse = yield courses_in_db_repository_1.coursesRepository.createCourse(newCourse);
             return createdCourse;
         });
     },
     deleteCourse(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const deleteCourse = yield db_1.courseCollection.deleteOne({ id: id });
-            return deleteCourse.deletedCount === 1;
+            const deletedCourse = yield courses_in_db_repository_1.coursesRepository.deleteCourse(id);
+            return deletedCourse;
         });
     },
     updateCourse(id, title) {
         return __awaiter(this, void 0, void 0, function* () {
-            const updateCourse = yield db_1.courseCollection.updateOne({ id: id }, { $set: { title: title } });
-            return updateCourse.matchedCount === 1;
+            const updatedCourse = yield courses_in_db_repository_1.coursesRepository.updateCourse(id, title);
+            return updatedCourse;
         });
     }
 };
