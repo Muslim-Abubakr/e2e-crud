@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.coursesRouter = void 0;
 const express_1 = require("express");
-const db_1 = require("../db/db");
 const __1 = require("..");
 const courses_in_db_repository_1 = require("../repositories/courses-in-db-repository");
 const express_validator_1 = require("express-validator");
@@ -45,10 +44,6 @@ exports.coursesRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, voi
         res.send(404);
     }
 }));
-exports.coursesRouter.delete('/__test__/data', (req, res) => {
-    db_1.db.courses = [];
-    res.sendStatus(__1.HTTP_STATUSES.NO_CONTENT);
-});
 exports.coursesRouter.put('/:id', titleValidation_1.titleValidation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
@@ -58,7 +53,7 @@ exports.coursesRouter.put('/:id', titleValidation_1.titleValidation, (req, res) 
     }
     const isUpdated = yield courses_in_db_repository_1.coursesRepository.updateCourse(+req.params.id, req.body.title);
     if (isUpdated) {
-        const findCourse = yield courses_in_db_repository_1.coursesRepository.getCourseById(+req.params.id);
+        const findCourse = courses_in_db_repository_1.coursesRepository.getCourseById(+req.params.id);
         res.send(findCourse);
     }
     else {

@@ -9,12 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.db = exports.runDb = exports.userCollection = exports.courseCollection = void 0;
+exports.runDb = exports.userCollection = exports.courseCollection = void 0;
 const mongodb_1 = require("mongodb");
 const mongoUri = process.env.mongoURI || "mongodb://0.0.0.0:27017";
 const client = new mongodb_1.MongoClient(mongoUri);
-exports.courseCollection = client.db('Base').collection("Courses");
-exports.userCollection = client.db('Base').collection('users');
+const db = client.db('Base');
+exports.courseCollection = db.collection("Courses");
+exports.userCollection = db.collection('users');
 function runDb() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -32,20 +33,3 @@ function runDb() {
     });
 }
 exports.runDb = runDb;
-exports.db = {
-    courses: [
-        { id: 1, title: 'front-end' },
-        { id: 2, title: 'back-end' },
-        { id: 3, title: 'automation qa' },
-        { id: 4, title: 'devops' }
-    ],
-    users: [
-        { id: 1, userName: 'Muslim' },
-        { id: 2, userName: 'Alan' }
-    ],
-    studentCourseBindings: [
-        { studentId: 1, courseId: 1, date: new Date(2023, 10, 1) },
-        { studentId: 2, courseId: 2, date: new Date(2023, 10, 1) },
-        { studentId: 3, courseId: 3, date: new Date(2023, 10, 1) }
-    ]
-};
