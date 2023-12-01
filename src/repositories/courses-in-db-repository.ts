@@ -10,7 +10,7 @@ export const coursesRepository = {
             filter.title = {$regex: title}
         }
 
-        return await courseCollection.find({}).toArray()
+        return courseCollection.find({}).toArray()
     },
 
     async getCourseById(id: number): Promise<CourseType | null> {

@@ -14,12 +14,12 @@ const courses_in_db_repository_1 = require("../repositories/courses-in-db-reposi
 exports.coursesService = {
     findCourse(title) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield courses_in_db_repository_1.coursesRepository.findCourse(title);
+            return courses_in_db_repository_1.coursesRepository.findCourse(title);
         });
     },
     getCourseById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield courses_in_db_repository_1.coursesRepository.getCourseById(id);
+            return courses_in_db_repository_1.coursesRepository.getCourseById(id);
         });
     },
     createCourse(title) {

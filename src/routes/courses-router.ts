@@ -9,12 +9,13 @@ import { coursesService } from "../domain/courses-srevice"
 import { validationResult } from "express-validator"
 import { titleValidation } from "../middlewares/titleValidation"
 import { CourseType } from "../types"
+import { coursesRepository } from "../repositories/courses-in-db-repository"
 
 export const coursesRouter = Router({})
 
 
 coursesRouter.get('/', async (req: RequestWithQuery<CourseGetModel>, res: Response) => {
-    let findCourse: CourseType[]  =  await coursesService.findCourse(req.query.title)
+    let findCourse: CourseType[]  =  await coursesRepository.findCourse(req.query.title)
     
     res.send(findCourse)
 })

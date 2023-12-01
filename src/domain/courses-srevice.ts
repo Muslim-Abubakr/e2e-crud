@@ -5,11 +5,11 @@ import { courseCollection } from "../db/db";
 
 export const coursesService = {
      async findCourse(title: string): Promise<CourseType[]> {
-        return await coursesRepository.findCourse(title)
+        return coursesRepository.findCourse(title)
     },
 
     async getCourseById(id: number): Promise<CourseType | null> {
-        return await coursesRepository.getCourseById(id)
+        return coursesRepository.getCourseById(id)
     },
 
     async createCourse(title: string): Promise<CourseType> {

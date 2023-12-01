@@ -18,7 +18,7 @@ exports.coursesRepository = {
             if (title) {
                 filter.title = { $regex: title };
             }
-            return yield db_1.courseCollection.find({}).toArray();
+            return db_1.courseCollection.find({}).toArray();
         });
     },
     getCourseById(id) {

@@ -15,9 +15,10 @@ const __1 = require("..");
 const courses_srevice_1 = require("../domain/courses-srevice");
 const express_validator_1 = require("express-validator");
 const titleValidation_1 = require("../middlewares/titleValidation");
+const courses_in_db_repository_1 = require("../repositories/courses-in-db-repository");
 exports.coursesRouter = (0, express_1.Router)({});
 exports.coursesRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let findCourse = yield courses_srevice_1.coursesService.findCourse(req.query.title);
+    let findCourse = yield courses_in_db_repository_1.coursesRepository.findCourse(req.query.title);
     res.send(findCourse);
 }));
 exports.coursesRouter.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
