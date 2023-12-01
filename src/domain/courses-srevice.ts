@@ -1,10 +1,10 @@
 import { coursesRepository } from "../repositories/courses-in-db-repository";
-import { CourseType } from "../types";
+import { CourseType, CourseModelOut } from "../models/types";
 import { courseCollection } from "../db/db";
 
 
 export const coursesService = {
-     async findCourse(title: string): Promise<CourseType[]> {
+     async findCourse(title: string): Promise<CourseModelOut[]> {
         return coursesRepository.findCourse(title)
     },
 
@@ -12,13 +12,14 @@ export const coursesService = {
         return coursesRepository.getCourseById(id)
     },
 
-    async createCourse(title: string): Promise<CourseType> {
-        const newCourse = {
+    async createCourse(title: string): Promise<CourseModelOut> {
+        const newCourse: CourseModelOut = {
             id: +(new Date()),
             title: title
         }
-        const createdCourse = await coursesRepository.createCourse(newCourse)
-        return createdCourse
+        const createdCourse: CourseModelOut = await coursesRepository.createCourse(newCourse)
+        let {_id, ...newBlogWithout_id} = createdCourse
+        return newBlogWithout_id
     },
 
 

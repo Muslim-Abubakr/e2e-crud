@@ -22,6 +22,18 @@ export type DBType = {
     studentCourseBindings: StudentCourseBindings[]
 }
 
+export type CourseModelOut = {
+    _id?: any
+    id: number
+    title: string
+}
+
+export type UserModelOut = {
+    _id?: any
+    id: string
+    userName: string
+}
+
 
 export type RequestWithBody<T> = Request<{},{}, T>
 export type RequestWithQuery<T> = Request<{},{},{},T>

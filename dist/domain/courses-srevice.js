@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.coursesService = void 0;
 const courses_in_db_repository_1 = require("../repositories/courses-in-db-repository");
@@ -29,7 +40,8 @@ exports.coursesService = {
                 title: title
             };
             const createdCourse = yield courses_in_db_repository_1.coursesRepository.createCourse(newCourse);
-            return createdCourse;
+            let { _id } = createdCourse, newBlogWithout_id = __rest(createdCourse, ["_id"]);
+            return newBlogWithout_id;
         });
     },
     deleteCourse(id) {

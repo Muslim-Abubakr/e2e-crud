@@ -18,12 +18,13 @@ exports.coursesRepository = {
             if (title) {
                 filter.title = { $regex: title };
             }
-            return db_1.courseCollection.find({}).toArray();
+            const courses = db_1.courseCollection.find({}, { projection: { _id: 0 } }).toArray();
+            return courses;
         });
     },
     getCourseById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            let course = yield db_1.courseCollection.findOne({ id: id });
+            let course = yield db_1.courseCollection.findOne({ id: id }, { projection: { _id: 0 } });
             return course;
         });
     },

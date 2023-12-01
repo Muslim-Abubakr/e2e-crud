@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express"
 import { HTTP_STATUSES } from ".."
-import { RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../types"
+import { RequestWithQuery, RequestWithBody, RequestWithParams, RequestWithParamsAndBody } from "../models/types"
 import { CourseCreateInputModel } from "../models/CreateCourseModel"
 import { CourseUpdateInputModel } from "../models/UpdateCourseModel"
 import { UriParamsCourseIdModel } from "../models/UriParamsCourseIdModel"
@@ -8,7 +8,7 @@ import { CourseGetModel } from "../models/GetCoursesQueryModel"
 import { coursesService } from "../domain/courses-srevice"  
 import { validationResult } from "express-validator"
 import { titleValidation } from "../middlewares/titleValidation"
-import { CourseType } from "../types"
+import { CourseType } from "../models/types"
 import { coursesRepository } from "../repositories/courses-in-db-repository"
 
 export const coursesRouter = Router({})

@@ -1,6 +1,6 @@
-import { DBType } from "../types"
+import { DBType } from "../models/types"
 import { MongoClient } from 'mongodb'
-import { CourseType, UserType } from "../types"
+import { CourseType, UserType } from "../models/types"
 
 const mongoUri = process.env.mongoURI || "mongodb://0.0.0.0:27017"
 

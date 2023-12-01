@@ -1,4 +1,4 @@
-import { UserType } from "../types";
+import { UserType } from "../models/types";
 import { userCollection } from "../db/db";
 
 

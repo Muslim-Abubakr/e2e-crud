@@ -1,24 +1,25 @@
-import { CourseType } from "../types";
+import { CourseType, CourseModelOut } from "../models/types";
 import { courseCollection } from "../db/db";
 
 
 export const coursesRepository = {
-     async findCourse(title: string): Promise<CourseType[]> {
+     async findCourse(title: string): Promise<CourseModelOut[]> {
         const filter: any = {}
 
         if (title) {
             filter.title = {$regex: title}
         }
 
-        return courseCollection.find({}).toArray()
+        const courses = courseCollection.find({}, {projection: {_id: 0}}).toArray()
+        return courses
     },
 
-    async getCourseById(id: number): Promise<CourseType | null> {
-        let course: CourseType | null = await courseCollection.findOne({id: id})
+    async getCourseById(id: number): Promise<CourseModelOut | null> {
+        let course: CourseType | null = await courseCollection.findOne({id: id}, {projection: {_id: 0}})
         return course
     },
 
-    async createCourse(createdCourse: CourseType): Promise<CourseType> {
+    async createCourse(createdCourse: CourseType): Promise<CourseModelOut> {
         await courseCollection.insertOne(createdCourse)
         return createdCourse
     },
