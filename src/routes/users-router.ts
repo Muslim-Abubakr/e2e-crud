@@ -7,27 +7,28 @@ import { UriParamsUsersIdModel } from "../models/UriParamsUsersIdModel"
 import { ViewUserModel } from "../models/ViewUserModel"
 import { usersRepository } from "../repositories/users-repository"
 import { inputValidationMiddleware } from "../middlewares/input-validation-middleware"
+import { usersService } from "../domain/users-services"
 
 export const usersRouter = Router({})
 
 
 usersRouter.get('/', async (req: RequestWithQuery<GetUsersQueryModel>,
                       res: Response<ViewUserModel[]>) => {
-    let findUsers: UserType[] = await usersRepository.findUsers(req.query.userName)
+    let findUsers: UserType[] = await usersService.findUsers(req.query.userName)
 
     res.send(findUsers)
   })
   
   usersRouter.get('/:id', async (req: RequestWithParams<UriParamsUsersIdModel>, 
     res: Response<ViewUserModel | null>) => {
-    const user: UserType | null = await usersRepository.getUserById(+req.params.id)
+    const user: UserType | null = await usersService.getUserById(+req.params.id)
 
     res.send(user)
   })
   
   usersRouter.delete('/:id', async (req: RequestWithParams<UriParamsUsersIdModel>, 
     res: Response) => {
-      const isDeleted: boolean = await usersRepository.deleteUser(+req.params.id)
+      const isDeleted: boolean = await usersService.deleteUser(+req.params.id)
       if (isDeleted) {
         res.send(204)
       } else { 
@@ -37,7 +38,7 @@ usersRouter.get('/', async (req: RequestWithQuery<GetUsersQueryModel>,
   
   usersRouter.post('/', async (req: RequestWithBody<CreateUserModel>,
      res: Response<ViewUserModel>)  => {
-    const newUser: UserType = await usersRepository.createUser(req.body.userName)
+    const newUser: UserType = await usersService.createUser(req.body.userName)
 
     res
         .status(201)
@@ -46,7 +47,7 @@ usersRouter.get('/', async (req: RequestWithQuery<GetUsersQueryModel>,
   
   usersRouter.put('/:id', async (req: RequestWithParamsAndBody<UriParamsUsersIdModel,UpdateUsersModel>, 
     res: Response) => {
-      const isUpdated: boolean | UserType = await usersRepository.updateUser(+req.params.id, req.body.userName)
+      const isUpdated: boolean | UserType = await usersService.updateUser(+req.params.id, req.body.userName)
 
       if (isUpdated) {
         return true

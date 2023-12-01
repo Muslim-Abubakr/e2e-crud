@@ -9,41 +9,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.usersRepository = void 0;
-const db_1 = require("../db/db");
-exports.usersRepository = {
+exports.usersService = void 0;
+const users_repository_1 = require("../repositories/users-repository");
+exports.usersService = {
     findUsers(userName) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (userName) {
-                return db_1.userCollection.find({ userName: { $regex: userName } }).toArray();
-            }
-            else {
-                return db_1.userCollection.find({}).toArray();
-            }
+            return users_repository_1.usersRepository.findUsers(userName);
         });
     },
     getUserById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = db_1.userCollection.findOne({ id: id });
-            return result;
+            const userById = users_repository_1.usersRepository.getUserById(id);
+            return userById;
         });
     },
-    createUser(newUser) {
+    createUser(userName) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield db_1.userCollection.insertOne(newUser);
-            return newUser;
+            const newUser = {
+                id: +(new Date()),
+                userName: userName
+            };
+            const createdUser = yield users_repository_1.usersRepository.createUser(newUser);
+            return createdUser;
         });
     },
     updateUser(id, userName) {
         return __awaiter(this, void 0, void 0, function* () {
-            const updateUser = yield db_1.userCollection.updateOne({ id: id }, { $set: { userName: userName } });
-            return updateUser.matchedCount === 1;
+            const updatedUser = yield users_repository_1.usersRepository.updateUser(id, userName);
+            return updatedUser;
         });
     },
     deleteUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const deleteUser = yield db_1.userCollection.deleteOne({ id: id });
-            return deleteUser.deletedCount === 1;
+            const deletedUser = yield users_repository_1.usersRepository.deleteUser(id);
+            return deletedUser;
         });
     }
 };

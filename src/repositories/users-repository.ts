@@ -13,20 +13,10 @@ export const usersRepository = {
 
     async getUserById(id: number): Promise<UserType | null> {
         const result = userCollection.findOne({ id: id });
-        
-        if (result) {
-            return result
-        } else {
-            return null
-        }
+        return result
     },
 
-    async createUser(userName: string): Promise<UserType> {
-        const newUser = {
-            id: +(new Date()),
-            userName: userName
-        }
-
+    async createUser(newUser: UserType): Promise<UserType> {
         await userCollection.insertOne(newUser)
         return newUser
     },
